@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}"/>
+    <link rel="stylesheet" href="/css/common_style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <header th:insert="~{blocks/header.html :: header}"></header>
+        <main class="main">
+            <div class="main__container _container">
+                <h1> Допомога </h1>
+                <div class="main__container-body">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores a maxime minus blanditiis
+                    consequuntur. Iusto at nobis iste omnis. Quisquam similique blanditiis ipsa officia vel consequuntur
+                    non iste reprehenderit. Incidunt! Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                    Blanditiis itaque, labore harum dolores fugiat numquam doloremque modi. Iste doloremque nihil
+                    consectetur maxime aliquam nobis, sequi sed, illo quasi minus voluptate! Lorem ipsum dolor sit amet,
+                    consectetur adipisicing elit. Asperiores, facere aut nihil ratione consectetur id neque recusandae
+                    assumenda, aliquam nostrum error eligendi excepturi repellat, laboriosam laudantium voluptatem.
+                    Exercitationem, quam soluta. Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit
+                    doloribus veritatis harum perferendis, molestiae maiores dolorem neque animi, voluptatibus velit
+                    sequi facilis assumenda, omnis laudantium accusamus saepe vitae voluptates maxime? Lorem ipsum,
+                    dolor sit amet consectetur adipisicing elit. Cupiditate error doloremque provident, accusamus rem
+                    quod ab obcaecati nostrum! Fuga ad assumenda maxime placeat laboriosam adipisci fugiat sed id
+                    laborum eaque!
+                </div>
+            </div>
+        </main>
+        <footer th:insert="~{blocks/footer.html :: footer}"></footer>
+    </div>
+</body>
+
+</html>

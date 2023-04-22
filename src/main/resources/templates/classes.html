@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}"/>
+    <link rel="stylesheet" href="/css/common_style.css">
+    <link rel="stylesheet" href="/css/classes_style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <header th:insert="~{blocks/header.html :: header}"></header>
+        <main class="main">
+            <div class="main__container _container">
+                <h1> Мої класи </h1>
+                <div class="classes">
+                    <div class="classes__class">
+                        <a class="classes__class-name" id="drop_button">Клас вчителя Іванов І.І.</a>
+                        <table class="classes__class-table" id="drop_element">
+                            <tr>
+                                <th>Учень</th>
+                                <th>Поле</th>
+                                <th>Поле</th>
+                                <th>Поле</th>
+                                <th>Поле</th>
+                            </tr>
+                            <tr>
+                                <td>Петров П.П.</td>
+                                <td>Поле Петрова</td>
+                                <td>Поле Петрова</td>
+                                <td>Поле Петрова</td>
+                                <td>Поле Петрова</td>
+                            </tr>
+                            <tr>
+                                <td>Петров П.П.</td>
+                                <td>Поле Петрова</td>
+                                <td>Поле Петрова</td>
+                                <td>Поле Петрова</td>
+                                <td>Поле Петрова</td>
+                            </tr>
+                            <tr>
+                                <td>Петров П.П.</td>
+                                <td>Поле Петрова</td>
+                                <td>Поле Петрова</td>
+                                <td>Поле Петрова</td>
+                                <td>Поле Петрова</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer th:insert="~{blocks/footer.html :: footer}"></footer>
+    </div>
+</body>
+
+</html>

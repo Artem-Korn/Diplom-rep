@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}"/>
+    <link rel="stylesheet" href="/css/common_style.css">
+    <link rel="stylesheet" href="/css/games_style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <header th:insert="~{blocks/header.html :: header}"></header>
+        <main class="main">
+            <div class="main__container _container">
+                <h1> Ігри </h1>
+                <h2> Завдання від вчителя </h2>
+                <div class="elements">
+                    <a th:each="el : ${tasks}" class="elements__task" href="#">
+                        <div class="elements__task-container">
+                            <table class="elements__task-container-table">
+                                <tr>
+                                    <th>Вчитель:</th>
+                                    <td th:text="${el.getTeacher()}"/>
+                                </tr>
+                                <tr>
+                                    <th>Дата здачі:</th>
+                                    <td>13.04.2023</td>
+                                </tr>
+                                <tr>
+                                    <th>Гра:</th>
+                                    <td th:text="${el.getGame()}"/>
+                                </tr>
+                            </table>
+                        </div>
+                    </a>
+                </div>
+                <h2> Вільний режим </h2>
+                <div class="elements">
+                    <a class="elements__game" href="#">
+                        <div class="elements__game-container">
+                            <div class="elements__game-icon">
+                                <img src="/img/mole.jpg" alt="" class="elements__game-icon-img">
+                            </div>
+                            <div class="elements__game-name">Знайди крота</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </main>
+        <footer th:insert="~{blocks/footer.html :: footer}"></footer>
+    </div>
+</body>
+
+</html>
