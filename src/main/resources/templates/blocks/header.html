@@ -1,29 +1,39 @@
 <header th:fragment="header" class="header">
   <div class="header__container _container">
-    <a class="header__container-logo" href="/">
+    <a class="header__container-logo" href="/home">
       <img src="/img/logo.png" alt="" class="header__container-logo-icon">
     </a>
     <nav class="header__container-nav">
-      <a class="header__container-nav-link _home" href="/home">
-        <img src="/img/home.png" alt="" class="header__container-nav-link-icon">
-        Дім
-      </a>
-      <a class="header__container-nav-link _games" href="/games">
-        <img src="/img/play.png" alt="" class="header__container-nav-link-icon">
-        Ігри
-      </a>
-      <a class="header__container-nav-link _classes" href="/classes">
-        <img src="/img/users.png" alt="" class="header__container-nav-link-icon">
-        Класи
-      </a>
-      <a class="header__container-nav-link _help" href="/help">
-        <img src="/img/help.png" alt="" class="header__container-nav-link-icon">
-        Допомога
-      </a>
-      <a class="header__container-nav-link _profile" href="/profile">
-        <img src="/img/user.png" alt="" class="header__container-nav-link-icon">
-        Профіль
-      </a>
+      <div class="link_container">
+        <a class="header__container-nav-link _home" href="/home">
+          <img src="/img/home.png" alt="" class="header__container-nav-link-icon">
+          Дім
+        </a>
+      </div>
+      <div class="link_container">
+        <a class="header__container-nav-link _games" href="/games">
+          <img src="/img/play.png" alt="" class="header__container-nav-link-icon">
+          Ігри
+        </a>
+      </div>
+      <div class="link_container">
+        <a class="header__container-nav-link _classes" href="/classes">
+          <img src="/img/users.png" alt="" class="header__container-nav-link-icon">
+          Класи
+        </a>
+      </div>
+      <div class="link_container">
+        <a class="header__container-nav-link _help" href="/help">
+          <img src="/img/help.png" alt="" class="header__container-nav-link-icon">
+          Допомога
+        </a>
+      </div>
+      <div class="link_container">
+        <a class="header__container-nav-link _profile" href="/user/profile">
+          <img src="/img/user.png" alt="" class="header__container-nav-link-icon">
+          Профіль
+        </a>
+      </div>
     </nav>
   </div>
 </header>
