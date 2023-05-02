@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TB - Таблиця Шульте</title>
+    <link rel="stylesheet" href="/css/preloader.css">
+    <link rel="stylesheet" href="/css/common_style.css">
+    <link rel="stylesheet" href="/css/game_style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <header th:insert="~{blocks/header.html :: header}"></header>
+        <main class="main">
+            <div class="main__container _container">
+                <h1>Таблиця Шульте</h1>
+                <h2>Налаштування</h2>
+                <div id="option">
+                    <form action="" class="main__container-block">
+                        <div></div>
+                        <div class="element">
+                            <label for="select_rows" class="element-label">
+                                Кількість рядків:
+                            </label>
+                            <select name="select_rows" id="select_rows" class="option-select _active">
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                            </select>
+                        </div>
+                        <div class="element">
+                            <label for="select_columns" class="element-label">
+                                Кількість стовпців:
+                            </label>
+                            <select name="select_columns" id="select_columns" class="option-select _active">
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                            </select>
+                        </div>
+                        <div class="element">
+                            <label for="select_is_colorfull" class="element-label">
+                                Клітинки
+                            </label>
+                            <select name="select_color" id="select_is_colorfull" class="option-select _active">
+                                <option value="0">Без кольору</option>
+                                <option value="1">Кольорові</option>
+                            </select>
+                        </div>
+                        <div class="element">
+                            <label for="select_type" class="element-label">
+                                Тип завдання:
+                            </label>
+                            <select name="select_type" id="select_type" class="option-select _active">
+                                <option value="sequence">Послідовність</option>
+                                <option value="counting">Підрахунок</option>
+                            </select>
+                        </div>
+                        <div class="element">
+                            <label for="select_topic" class="element-label">
+                                Тема завдання:
+                            </label>
+                            <select name="select_topic" id="select_topic" class="option-select _active">
+                                <option value="0" class="_sequence">Цифри</option>
+                                <option value="1" class="_sequence">Великі літери</option>
+                                <option value="2" class="_sequence">Малі літери</option>
+                                <option value="0" class="_counting">Фігури</option>
+                                <option value="1" class="_counting">Тварини</option>
+                            </select>
+                        </div>
+                        <div class="element _counting">
+                            <label for="select_element_count" class="element-label">
+                                Кількість елементів пошуку:
+                            </label>
+                            <select name="select_element_count" id="select_element_count" class="option-select _active">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                            </select>
+                        </div>
+                        <div class="element">
+                            <label for="select_time" class="element-label">
+                                Час демонстрації:
+                            </label>
+                            <select name="select_time" id="select_time" class="option-select _active">
+                                <option value="5">5с.</option>
+                                <option value="10">10с.</option>
+                                <option value="15">15с.</option>
+                                <option value="20">20с.</option>
+                                <option value="25">25с.</option>
+                                <option value="30">30с.</option>
+                                <option value="40">40с.</option>
+                                <option value="50">50с.</option>
+                                <option value="60">1хв.</option>
+                            </select>
+                        </div>
+                        <div th:if="${isTeacher}" class="element">
+                            <input type="submit" class="element-button" id="btn_send" value="Надіслати завдання" />
+                        </div>
+                    </form>
+                </div>
+                <h2>Ігровий екран</h2>
+                <div class="main__container-screen">
+                    <div id="screen">
+                        <div class="preloader" id="preloader">
+                            <div class="preloader__loader">
+                                <div class="loadingio-spinner-rolling-ndut8booj1a">
+                                    <div class="ldio-b56je0msj6i">
+                                        <div></div>
+                                    </div>
+                                </div>
+                                <span class="preloader__loader-status">
+                                </span>
+                            </div>
+                        </div>
+                        <canvas id="game_canvas"></canvas>
+                    </div>
+                    <form th:action="@{/games/shulte}" th:method="post" class="main__container-screen-buttons">
+                        <input type="hidden" name="mark" id="mark" />
+                        <div class="button_container" id="btn_start_container">
+                            <input type="button" class="button_container-button _start_button" id="btn_start"
+                                   value="Старт" />
+                        </div>
+                        <div class="button_container">
+                            <input type="submit" class="button_container-button _check_button" id="btn_check"
+                                   value="Перевірка" disabled />
+                        </div>
+                    </form>
+                </div>
+                <h2 class="_counting">Ваші відповіді</h2>
+                <div class="main__container-block _counting">
+                    <div class="element _answer">
+                        <label for="answer_input1" class="element-label _count_elem">
+                            Кількість
+                        </label>
+                        <input id="answer_input1" class="element-input _check" type="number" value="0" min="0" max="49">
+                    </div>
+                    <div class="element _answer">
+                        <label for="answer_input2" class="element-label _count_elem">
+                            Кількість
+                        </label>
+                        <input id="answer_input2" class="element-input _check" type="number" value="0" min="0" max="49">
+                    </div>
+                    <div class="element _answer">
+                        <label for="answer_input3" class="element-label _count_elem">
+                            Кількість
+                        </label>
+                        <input id="answer_input3" class="element-input _check" type="number" value="0" min="0" max="49">
+                    </div>
+                    <div class="element _answer">
+                        <label for="answer_input4" class="element-label _count_elem">
+                            Кількість
+                        </label>
+                        <input id="answer_input4" class="element-input _check" type="number" value="0" min="0" max="49">
+                    </div>
+                    <div class="element _answer">
+                        <label for="answer_input5" class="element-label _count_elem">
+                            Кількість
+                        </label>
+                        <input id="answer_input5" class="element-input _check" type="number" value="0" min="0" max="49">
+                    </div>
+                    <div class="element _answer">
+                        <label for="answer_input6" class="element-label _count_elem">
+                            Кількість
+                        </label>
+                        <input id="answer_input6" class="element-input _check" type="number" value="0" min="0" max="49">
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer th:insert="~{blocks/footer.html :: footer}"></footer>
+    </div>
+    <script src="/js/commonDesign.js"></script>
+    <script src="/js/shulteDesign.js"></script>
+    <script th:if="${isTeacher}" type="module" src="/js/teacher/shulteMain.js"></script>
+    <script th:unless="${isTeacher}" type="module" src="/js/student/shulteMain.js"></script>
+</body>
+
+</html>

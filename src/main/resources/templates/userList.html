@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TB - Контроль користувачів</title>
+    <link rel="stylesheet" href="/css/common_style.css">
+</head>
+
+<body>
+<div class="wrapper">
+    <header th:insert="~{blocks/header.html :: header}"></header>
+    <main class="main">
+        <div class="main__container _container">
+            <h1> Список існуючих користувачів </h1>
+            <div class="main__container-body">
+                <table>
+                    <tr>
+                        <th>Логін</th>
+                        <th>Ролі</th>
+                        <th></th>
+                    </tr>
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.username}"/>
+                        <td><div th:each="role : ${user.roles}" th:text="${role}"/></td>
+                        <td><a th:href="|/user/${user.id}|">Редагувати</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </main>
+    <footer th:insert="~{blocks/footer.html :: footer}"></footer>
+</div>
+</body>
+
+</html>
