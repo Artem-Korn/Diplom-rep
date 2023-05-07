@@ -19,7 +19,7 @@ btn_start.addEventListener("click", function () {
         this.value = "Старт";
         this.classList.remove("_clicked");
         btn_check.classList.remove("_timer");
-
+        btn_check.disabled = true;
     }
     else {
         disabledAll(true);

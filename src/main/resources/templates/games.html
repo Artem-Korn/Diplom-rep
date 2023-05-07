@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${title}"/>
+    <title>TB - Ігри</title>
     <link rel="stylesheet" href="/css/common_style.css">
     <link rel="stylesheet" href="/css/games_style.css">
 </head>
@@ -16,22 +16,44 @@
         <main class="main">
             <div class="main__container _container">
                 <h1> Ігри </h1>
-                <h2> Завдання від вчителя </h2>
+                <h2> Завдання для Вас </h2>
                 <div class="elements">
-                    <a th:each="el : ${tasks}" class="elements__task" href="#">
+                    <a th:each="task : ${tasks}" class="elements__task" href="#">
                         <div class="elements__task-container">
                             <table class="elements__task-container-table">
                                 <tr>
                                     <th>Вчитель:</th>
-                                    <td th:text="${el.getTeacher()}"/>
+                                    <td th:text="${task.getTeacherName()}"/>
                                 </tr>
                                 <tr>
-                                    <th>Дата здачі:</th>
-                                    <td>13.04.2023</td>
+                                    <th>Опції:</th>
+                                    <td th:text="${task.getOptions()}"/>
                                 </tr>
                                 <tr>
                                     <th>Гра:</th>
-                                    <td th:text="${el.getGame()}"/>
+                                    <td th:text="${task.getGame_name()}"/>
+                                </tr>
+                            </table>
+                        </div>
+                    </a>
+                </div>
+                <h2 th:if="${isTeacher}"> Завдання від Вас </h2>
+                <div th:if="${isTeacher}" class="elements">
+                    <a th:each="myTask : ${myTasks}" class="elements__task" href="#">
+                        <div class="elements__task-container">
+                            <table class="elements__task-container-table">
+                                <tr>
+                                    <th>Вчитель:</th>
+                                    <td th:text="${myTask.getTeacherName()}"/>
+                                </tr>
+                                <tr>
+                                    <th>Опції:</th>
+<!--                                    <td th:text="${#strings.arraySplit(task.getOptions(), ';')[3]}"/>-->
+                                    <td th:text="${myTask.getOptions()}"/>
+                                </tr>
+                                <tr>
+                                    <th>Гра:</th>
+                                    <td th:text="${myTask.getGame_name()}"/>
                                 </tr>
                             </table>
                         </div>
@@ -42,9 +64,17 @@
                     <a class="elements__game" href="/games/shulte">
                         <div class="elements__game-container">
                             <div class="elements__game-icon">
-                                <img src="/img/mole.jpg" alt="" class="elements__game-icon-img">
+                                <img src="/img/games/table.png" alt="" class="elements__game-icon-img">
                             </div>
                             <div class="elements__game-name">Таблиця Шульте</div>
+                        </div>
+                    </a>
+                    <a class="elements__game" href="/games/mole">
+                        <div class="elements__game-container">
+                            <div class="elements__game-icon">
+                                <img src="/img/games/mole.jpg" alt="" class="elements__game-icon-img">
+                            </div>
+                            <div class="elements__game-name">Знайди крота</div>
                         </div>
                     </a>
                 </div>

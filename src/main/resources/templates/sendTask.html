@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TB - Створення завдання</title>
+    <link rel="stylesheet" href="/css/common_style.css">
+    <link rel="stylesheet" href="/css/games_style.css">
+</head>
+
+<body>
+<div class="wrapper">
+    <header th:insert="~{blocks/header.html :: header}"></header>
+    <main class="main">
+        <div class="main__container _container">
+            <h1> Форма відправки завдання </h1>
+            <h2> Нове завдання </h2>
+            <div class="elements__task-container">
+                <div class="elements__task-container">
+                    <table class="elements__task-container-table">
+                        <tr>
+                            <th>Вчитель:</th>
+                            <td th:text="${newTask.getTeacherName()}"/>
+                        </tr>
+                        <tr>
+                            <th>Опції:</th>
+                            <td th:text="${newTask.getOptions()}"/>
+                        </tr>
+                        <tr>
+                            <th>Гра:</th>
+                            <td th:text="${newTask.getGame_name()}"/>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <h2> Кому відправити </h2>
+            <form th:action="@{/games/sendTask}" th:method="post">
+                <input type="hidden" th:value="${newTask.id}" name="newTask">
+                <div>
+                    <label th:each="student : ${students}">
+                        <input type="checkbox" name="students" th:value="${student.id}">
+                        [[${student.username}]]
+                    </label>
+                </div>
+                <input type="submit" value="Відправити завдання учням">
+            </form>
+        </div>
+    </main>
+    <footer th:insert="~{blocks/footer.html :: footer}"></footer>
+</div>
+</body>
+
+</html>

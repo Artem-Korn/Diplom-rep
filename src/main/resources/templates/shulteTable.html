@@ -22,8 +22,8 @@
                 <h1>Таблиця Шульте</h1>
                 <h2>Налаштування</h2>
                 <div id="option">
-                    <form action="" class="main__container-block">
-                        <div></div>
+                    <form th:action="@{/games/createTask}" th:method="post" class="main__container-block">
+                        <input type="hidden" value="Таблиця Шульте" name="name">
                         <div class="element">
                             <label for="select_rows" class="element-label">
                                 Кількість рядків:
@@ -63,7 +63,7 @@
                             </label>
                             <select name="select_type" id="select_type" class="option-select _active">
                                 <option value="sequence">Послідовність</option>
-                                <option value="counting">Підрахунок</option>
+                                <option th:if="${isTeacher}" value="counting">Підрахунок</option>
                             </select>
                         </div>
                         <div class="element">
@@ -74,8 +74,8 @@
                                 <option value="0" class="_sequence">Цифри</option>
                                 <option value="1" class="_sequence">Великі літери</option>
                                 <option value="2" class="_sequence">Малі літери</option>
-                                <option value="0" class="_counting">Фігури</option>
-                                <option value="1" class="_counting">Тварини</option>
+                                <option th:if="${isTeacher}" value="0" class="_counting">Фігури</option>
+                                <option th:if="${isTeacher}" value="1" class="_counting">Тварини</option>
                             </select>
                         </div>
                         <div class="element _counting">
@@ -128,7 +128,7 @@
                         </div>
                         <canvas id="game_canvas"></canvas>
                     </div>
-                    <form th:action="@{/games/shulte}" th:method="post" class="main__container-screen-buttons">
+                    <form th:action="@{/games/mark}" th:method="post" class="main__container-screen-buttons">
                         <input type="hidden" name="mark" id="mark" />
                         <div class="button_container" id="btn_start_container">
                             <input type="button" class="button_container-button _start_button" id="btn_start"
@@ -184,9 +184,8 @@
         <footer th:insert="~{blocks/footer.html :: footer}"></footer>
     </div>
     <script src="/js/commonDesign.js"></script>
-    <script src="/js/shulteDesign.js"></script>
-    <script th:if="${isTeacher}" type="module" src="/js/teacher/shulteMain.js"></script>
-    <script th:unless="${isTeacher}" type="module" src="/js/student/shulteMain.js"></script>
+    <script src="/js/shulte/shulteDesign.js"></script>
+    <script type="module" src="/js/shulte/shulteMain.js"></script>
 </body>
 
 </html>

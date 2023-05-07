@@ -1,4 +1,4 @@
-import { ShulteTable } from "../shulteTable.js";
+import { ShulteTable } from "./shulteTable.js";
 
 const canvas = document.getElementById('game_canvas');
 const context = canvas.getContext('2d');
@@ -7,22 +7,13 @@ const table = new ShulteTable(canvas, context);
 window.addEventListener("load", function () {
     updateSize();
     updateHeader();
-    updateGameTime();
-    updateGrid();
+    table.setGameTime(select_time.value);
+    table.setGrid(select_rows.value, select_columns.value);
+    table.setGridColors(select_is_colorfull.value);
     render();
 });
 
 window.addEventListener("resize", updateSize);
-
-document.getElementById("select_type").addEventListener("change", updateHeader);
-document.getElementById("select_topic").addEventListener("change", updateHeader);
-
-document.getElementById("select_element_count").addEventListener("change", updateHeader);
-
-document.getElementById("select_rows").addEventListener("change", updateGrid);
-document.getElementById("select_columns").addEventListener("change", updateGrid);
-
-document.getElementById("select_time").addEventListener("change", updateGameTime);
 
 document.getElementById("btn_start").addEventListener("click", updateGameStat);
 
@@ -32,8 +23,14 @@ function updateSize() {
     table.updateSize();
 }
 
-function updateGameTime() {
-    table.setGameTime(select_time.value);
+function updateGameStat() {
+    if (!table.isStarted())
+        table.updateGameStat(btn_check);
+    btn_start_container.style.display = "none";
+}
+
+function checkGame() {
+    mark.value = table.checkGame(document.getElementsByClassName("_check"));
 }
 
 function updateHeader() {
@@ -42,20 +39,6 @@ function updateHeader() {
         let count_arr = document.getElementsByClassName("_count_elem");
         for (let i = 0; i < searching_elem.length; i++) count_arr[i].innerHTML = searching_elem[i] + ":";
     }
-}
-
-function updateGrid() {
-    table.setGrid(select_rows.value, select_columns.value);
-}
-
-function updateGameStat() {
-    table.setGridColors(select_is_colorfull.value);
-    table.updateGameStat(btn_check);
-}
-
-function checkGame() {
-    table.checkGame(document.getElementsByClassName("_check"));
-    btn_check.disabled = true;
 }
 
 function clear() {

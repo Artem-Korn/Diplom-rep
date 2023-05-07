@@ -21,16 +21,20 @@
 
       <form th:method="post" th:action="@{/login}">
 
-        <label for="username">Логін : </label>
-        <input type="text" id="username" name="username"/>
+        <div>
+          <label for="username">Логін : </label>
+          <input type="text" id="username" name="username"/>
+        </div>
 
-        <label for="password">Пароль : </label>
-        <input type="password" id="password" name="password"/>
+        <div>
+          <label for="password">Пароль : </label>
+          <input type="password" id="password" name="password"/>
+        </div>
 
         <input type="submit" value="Увійти"/>
       </form>
 
-      <a href="/registration">Створити аккаунт</a>
+      <a th:href="@{/registration}">Створити аккаунт</a>
     </div>
   </main>
   <footer th:insert="~{blocks/footer.html :: footer}"></footer>

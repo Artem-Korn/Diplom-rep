@@ -1,6 +1,7 @@
 package com.example.trainbrain.service;
 
 import com.example.trainbrain.models.Role;
+import com.example.trainbrain.models.Task;
 import com.example.trainbrain.models.User;
 import com.example.trainbrain.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
+import java.lang.module.FindException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,10 +35,18 @@ public class JpaUserDetailsService implements UserDetailsService {
                 ));
     }
 
+    public User getUserById(Long Id) {
+        return userRepository
+                .findById(Id)
+                .orElseThrow(()->new FindException(
+                        "Користувача з таким Id не знайдено: " + Id
+                ));
+    }
+
     public boolean addUser(User user) {
         if(userRepository.existsByUsername(user.getUsername())) return false;
 
-        user.setRoles(Collections.singleton(Role.STUDENT));
+        user.setRoles(Collections.singleton(Role.ADMIN));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         userRepository.save(user);
@@ -44,7 +54,7 @@ public class JpaUserDetailsService implements UserDetailsService {
         return true;
     }
 
-    public boolean saveUser(User user, String username, Map<String, String> form) {
+    public void saveUser(User user, String username, Map<String, String> form) {
         user.setUsername(username);
 
         Set<String> roles = Arrays.stream(Role.values())
@@ -60,7 +70,6 @@ public class JpaUserDetailsService implements UserDetailsService {
         }
 
         userRepository.save(user);
-        return true;
     }
 
     public void updateProfile(User user, String password) {
@@ -72,5 +81,22 @@ public class JpaUserDetailsService implements UserDetailsService {
 
     public Iterable<User> findAll() {
         return userRepository.findAll();
+    }
+
+    public List<User> findAllStudents() {
+        Iterable<User> all = userRepository.findAll();
+        List<User> students = new ArrayList<>();
+        for (User user : all) {
+            if(user.getRoles().contains(Role.STUDENT))
+                students.add(user);
+        }
+        return students;
+    }
+
+    public void sendTask(List<User> students, Task newTask) {
+        for (User student : students) {
+            student.getTasks().add(newTask);
+            userRepository.save(student);
+        }
     }
 }

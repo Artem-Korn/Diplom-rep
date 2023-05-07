@@ -67,6 +67,14 @@ export class ShulteTable {
         this.elements_sheet = elements_sheet;
 
         this.element_sheet_fragment_size = 100;
+
+        const tick = new Audio();
+        tick.src = '/audio/tick.mp3';
+        this.tick = tick;
+
+        const bell = new Audio();
+        bell.src = '/audio/bell.wav';
+        this.bell = bell;
     }
 
     isStarted() {
@@ -185,13 +193,18 @@ export class ShulteTable {
 
             let counter = this.game.time / 1000;
             timer_panel.value = counter--;
+            this.tick.play();
             this.game.show = true;
 
             this.game.interval_id = setInterval(() => {
                 timer_panel.value = counter--;
 
-                if (counter < 0) {
+                if (counter >= 0) {
+                    this.tick.play();
+                }
+                else if (counter < 0) {
                     clearInterval(this.game.interval_id);
+                    this.bell.play();
                     timer_panel.classList.remove("_timer");
                     timer_panel.value = "Перевірка";
                     timer_panel.disabled = false;

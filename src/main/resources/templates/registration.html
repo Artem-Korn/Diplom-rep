@@ -17,13 +17,27 @@
 
       <h1> Сторінка реєстрації </h1>
 
+      <div th:text="${message}"></div>
+
       <form th:method="post" th:action="@{/registration}" th:object="${user}">
 
-        <label for="username">Логін : </label>
-        <input type="text" id="username" th:field="*{username}"/>
+        <div>
+          <label for="username">Логін : </label>
+          <input type="text" id="username" th:field="*{username}"/>
+          <span th:if="${usernameError}" th:text="${usernameError}"/>
+        </div>
 
-        <label for="password">Пароль : </label>
-        <input type="password" id="password" th:field="*{password}"/>
+        <div>
+          <label for="password">Пароль : </label>
+          <input type="password" id="password" th:field="*{password}"/>
+          <span th:if="${passwordError}" th:text="${passwordError}"/>
+        </div>
+
+        <div>
+          <label for="password2">Повторіть пароль : </label>
+          <input type="password" id="password2" name="password2"/>
+          <span th:if="${password2Error}" th:text="${password2Error}"/>
+        </div>
 
         <input type="submit" value="Зареєструватись"/>
       </form>

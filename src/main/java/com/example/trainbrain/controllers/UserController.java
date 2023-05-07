@@ -13,10 +13,10 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
-public class UsersController {
+public class UserController {
     private final JpaUserDetailsService jpaUserDetailsService;
 
-    public UsersController(JpaUserDetailsService jpaUserDetailsService) {
+    public UserController(JpaUserDetailsService jpaUserDetailsService) {
         this.jpaUserDetailsService = jpaUserDetailsService;
     }
 

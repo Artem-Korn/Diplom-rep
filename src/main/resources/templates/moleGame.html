@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TB - Таблиця Шульте</title>
+    <link rel="stylesheet" href="/css/preloader.css">
+    <link rel="stylesheet" href="/css/common_style.css">
+    <link rel="stylesheet" href="/css/game_style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <header th:insert="~{blocks/header.html :: header}"></header>
+        <main class="main">
+            <div class="main__container _container">
+                <h1>Знайди Крота</h1>
+                <h2>Налаштування</h2>
+                <div id="option">
+                    <form th:action="@{/games/createTask}" th:method="post" class="main__container-block">
+                        <input type="hidden" value="Знайди крота" name="name">
+                        <div class="element">
+                            <label for="select_rows" class="element-label">
+                                Кількість рядків:
+                            </label>
+                            <select name="select_rows" id="select_rows" class="option-select">
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option th:if="${isTeacher}" value="5">5</option>
+                                <option th:if="${isTeacher}" value="6">6</option>
+                                <option th:if="${isTeacher}" value="7">7</option>
+                            </select>
+                        </div>
+                        <div class="element">
+                            <label for="select_columns" class="element-label">
+                                Кількість стовпців:
+                            </label>
+                            <select name="select_columns" id="select_columns" class="option-select">
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option th:if="${isTeacher}" value="5">5</option>
+                                <option th:if="${isTeacher}" value="6">6</option>
+                                <option th:if="${isTeacher}" value="7">7</option>
+                            </select>
+                        </div>
+                        <div class="element">
+                            <label for="select_start_pos" class="element-label">
+                                Початкова позиція:
+                            </label>
+                            <select name="select_start_pos" id="select_start_pos" class="option-select">
+                                <option value="0">Випадкова</option>
+                                <option value="1">Задати</option>
+                            </select>
+                            <input id="num_start_pos" class="element-input" type="number" value="1" min="1" max="9">
+                        </div>
+                        <div class="element">
+                            <label for="select_steps_count" class="element-label">
+                                Кількість дій:
+                            </label>
+                            <select name="select_steps_count" id="select_steps_count" class="option-select">
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option th:if="${isTeacher}" value="5">5</option>
+                                <option th:if="${isTeacher}" value="6">6</option>
+                                <option th:if="${isTeacher}" value="7">7</option>
+                            </select>
+                        </div>
+                        <div class="element">
+                            <label for="select_speed" class="element-label">
+                                Час на дію:
+                            </label>
+                            <select name="select_speed" id="select_speed" class="option-select">
+                                <option value="2">2c.</option>
+                                <option value="3">3c.</option>
+                                <option value="4">4c.</option>
+                                <option value="5">5c.</option>
+                            </select>
+                        </div>
+                        <div class="element">
+                            <label for="select_hide" class="element-label">
+                                Сховати сітку:
+                            </label>
+                            <select name="select_hide" id="select_hide" class="option-select">
+                                <option value="0">ні</option>
+                                <option th:if="${isTeacher}" value="1">так</option>
+                            </select>
+                        </div>
+                        <div class="element">
+                            <label for="select_demo" class="element-label">
+                                Демо гра:
+                            </label>
+                            <select name="select_demo" id="select_demo" class="option-select">
+                                <option value="0">ні</option>
+                                <option value="1">так</option>
+                            </select>
+                        </div>
+                        <div th:if="${isTeacher}" class="element">
+                            <input type="submit" class="element-button" id="btn_send" value="Надіслати завдання" />
+                        </div>
+                    </form>
+                </div>
+                <h2>Ігровий екран</h2>
+                <div class="main__container-screen">
+                    <div id="screen">
+                        <div class="preloader" id="preloader">
+                            <div class="preloader__loader">
+                                <div class="loadingio-spinner-rolling-ndut8booj1a">
+                                    <div class="ldio-b56je0msj6i">
+                                        <div></div>
+                                    </div>
+                                </div>
+                                <span class="preloader__loader-status">
+                                </span>
+                            </div>
+                        </div>
+                        <canvas id="game_canvas"></canvas>
+                    </div>
+                    <form th:action="@{/games/mark}" th:method="post" class="main__container-screen-buttons">
+                        <input type="hidden" name="mark" id="mark" />
+                        <div class="button_container" id="btn_start_container">
+                            <input type="button" class="button_container-button _start_button" id="btn_start"
+                                value="Старт" />
+                        </div>
+                        <div class="button_container">
+                            <input type="submit" class="button_container-button _check_button" id="btn_check"
+                                value="Перевірка" disabled />
+                        </div>
+                    </form>
+                </div>
+                <h2 class="_counting">Ваші відповіді</h2>
+                <div class="main__container-block _counting">
+                    <div class="element _answer">
+                        <label class="element-label _count_elem">
+                            Позиція крота:
+                        </label>
+                        <input id="answer" class="element-input _check" type="number" value="0" min="0" max="49">
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer th:insert="~{blocks/footer.html :: footer}"></footer>
+    </div>
+    <script src="/js/commonDesign.js"></script>
+    <script src="/js/mole/moleDesign.js"></script>
+    <script type="module" src="/js/mole/moleMain.js"></script>
+</body>
+
+</html>
