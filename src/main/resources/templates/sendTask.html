@@ -2,11 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TB - Створення завдання</title>
-    <link rel="stylesheet" href="/css/common_style.css">
+    <th:block th:replace="blocks/head.html :: head (page_name = 'Редагування завдання')"></th:block>
     <link rel="stylesheet" href="/css/games_style.css">
 </head>
 
@@ -15,41 +11,48 @@
     <header th:insert="~{blocks/header.html :: header}"></header>
     <main class="main">
         <div class="main__container _container">
-            <h1> Форма відправки завдання </h1>
-            <h2> Нове завдання </h2>
-            <div class="elements__task-container">
-                <div class="elements__task-container">
-                    <table class="elements__task-container-table">
-                        <tr>
-                            <th>Вчитель:</th>
-                            <td th:text="${newTask.getTeacherName()}"/>
-                        </tr>
-                        <tr>
-                            <th>Опції:</th>
-                            <td th:text="${newTask.getOptions()}"/>
-                        </tr>
-                        <tr>
-                            <th>Гра:</th>
-                            <td th:text="${newTask.getGame_name()}"/>
-                        </tr>
-                    </table>
-                </div>
-            </div>
+            <h1> Форма редагування завдання </h1>
+            <h2> Завдання: </h2>
+            <div th:text="'Гра : ' + ${newTask.gameName}"></div>
+            <div th:text="'Складність : ' + ${newTask.difficulty} + '%'"></div>
             <h2> Кому відправити </h2>
-            <form th:action="@{/games/sendTask}" th:method="post">
-                <input type="hidden" th:value="${newTask.id}" name="newTask">
-                <div>
-                    <label th:each="student : ${students}">
-                        <input type="checkbox" name="students" th:value="${student.id}">
+            <form th:action="@{|/games/sendTask/${newTask.id}|}" th:method="post">
+                <div th:each="class : ${classes}">
+                    <label>
+                        <input type="checkbox" name="classes" class="all_check" th:value="${class.id}">
+                        [[${class.name}]]
+                    </label><br>
+                    <label th:each="student : ${class.students}">
+                        <input type="checkbox" name="students" class="checkbox" th:value="${student.id}"
+                               th:checked="${newTask.students.contains(student)}">
                         [[${student.username}]]
                     </label>
                 </div>
-                <input type="submit" value="Відправити завдання учням">
+                <input type="submit" value="Задати завдання вибраним студентам">
             </form>
+            <form th:action="@{|/games/removeTask/${newTask.id}|}" th:method="post">
+                <input type="submit" value="Видалити завдання">
+            </form>
+            <h2> Історія виконання </h2>
+            <table>
+                <tr>
+                    <th>Логін</th>
+                    <th>ФІО</th>
+                    <th>Дата виконання</th>
+                    <th>Оцінка</th>
+                </tr>
+                <tr th:each="mark : ${newTask.marks}" th:object="${mark.user}">
+                    <td th:text="*{username}"/>
+                    <td th:text="|*{lastName} *{firstName[0]}. *{patronymic[0]}.|"></td>
+                    <td th:text="${mark.date}"></td>
+                    <td th:text="${mark.mark < 0 ? 'Зроблено' : mark.mark}"></td>
+                </tr>
+            </table>
         </div>
     </main>
-    <footer th:insert="~{blocks/footer.html :: footer}"></footer>
+    <footer th:replace="~{blocks/footer.html :: footer}"></footer>
 </div>
+<script src="/js/groupCheckboxes.js"></script>
 </body>
 
 </html>

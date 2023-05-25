@@ -19,6 +19,15 @@ public class User implements UserDetails {
     @NotBlank(message = "Логін не може бути порожнім")
     private String username;
 
+    @NotBlank(message = "Ім'я не може бути порожнім")
+    private String first_name;
+
+    @NotBlank(message = "Прізвище не може бути порожнім")
+    private String last_name;
+
+    @NotBlank(message = "По батькові не може бути порожнім")
+    private String patronymic;
+
     @NotBlank(message = "Пароль не може бути порожнім")
     private String password;
 
@@ -28,7 +37,10 @@ public class User implements UserDetails {
     private Set<Role> roles;
 
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
-    private Set<Task> myTasks;
+    private Set<Task> my_tasks;
+
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
+    private Set<StudClass> my_studclasses;
 
     @ManyToMany
     @JoinTable(
@@ -38,10 +50,24 @@ public class User implements UserDetails {
     )
     private Set<Task> tasks = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "USER_STUDCLASS_TABLE",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "studclass_id")}
+    )
+    private Set<StudClass> studclasses = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Mark> marks;
+
     public User() {}
 
-    public User(String username, String password, Set<Role> roles) {
+    public User(String username, String first_name, String last_name, String patronymic, String password, Set<Role> roles) {
         this.username = username;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.patronymic = patronymic;
         this.password = password;
         this.roles = roles;
     }
@@ -62,6 +88,30 @@ public class User implements UserDetails {
         this.username = username;
     }
 
+    public String getFirstName() {
+        return first_name;
+    }
+
+    public void setFirstName(String first_name) {
+        this.first_name = first_name;
+    }
+
+    public String getLastName() {
+        return last_name;
+    }
+
+    public void setLastName(String last_name) {
+        this.last_name = last_name;
+    }
+
+    public String getPatronymic() {
+        return patronymic;
+    }
+
+    public void setPatronymic(String patronymic) {
+        this.patronymic = patronymic;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -79,11 +129,11 @@ public class User implements UserDetails {
     }
 
     public Set<Task> getMyTasks() {
-        return myTasks;
+        return my_tasks;
     }
 
-    public void setMyTasks(Set<Task> myTasks) {
-        this.myTasks = myTasks;
+    public void setMyTasks(Set<Task> my_tasks) {
+        this.my_tasks = my_tasks;
     }
 
     public Set<Task> getTasks() {
@@ -92,6 +142,30 @@ public class User implements UserDetails {
 
     public void setTasks(Set<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public Set<StudClass> getMyStudclasses() {
+        return my_studclasses;
+    }
+
+    public void setMyStudclasses(Set<StudClass> my_studclasses) {
+        this.my_studclasses = my_studclasses;
+    }
+
+    public Set<StudClass> getStudclasses() {
+        return studclasses;
+    }
+
+    public void setStudclasses(Set<StudClass> studclasses) {
+        this.studclasses = studclasses;
+    }
+
+    public Set<Mark> getMarks() {
+        return marks;
+    }
+
+    public void setMarks(Set<Mark> marks) {
+        this.marks = marks;
     }
 
     @Override

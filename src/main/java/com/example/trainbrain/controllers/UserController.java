@@ -3,6 +3,9 @@ package com.example.trainbrain.controllers;
 import com.example.trainbrain.models.Role;
 import com.example.trainbrain.models.User;
 import com.example.trainbrain.service.JpaUserDetailsService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -22,13 +25,22 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
-    public String userList(Model model) {
-        model.addAttribute("users", jpaUserDetailsService.findAll());
+    public String userList(
+            Model model,
+            @PageableDefault(sort = {"username"}, direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        model.addAttribute("users", jpaUserDetailsService.findAll(pageable));
         return "userList";
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("{user}")
+    @PostMapping("/filter")
+    public String filter(@RequestParam String username) {
+        return "redirect:/user";
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("{user}/edit")
     public String userEditForm(@PathVariable User user, Model model) {
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
@@ -36,7 +48,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping
+    @PostMapping("{user}/edit")
     public String userSave(
             @RequestParam String username,
             @RequestParam Map<String, String> form,
@@ -46,9 +58,24 @@ public class UserController {
         return "redirect:/user";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("{user}/remove")
+    public String userRemove(@PathVariable User user) {
+        jpaUserDetailsService.removeUser(user);
+        return "redirect:/user";
+    }
+
     @GetMapping("profile")
     public String getProfile(Model model, @AuthenticationPrincipal User user) {
-        model.addAttribute("username", user.getUsername());
+        User full_user = jpaUserDetailsService.getUserById(user.getId());
+        model.addAttribute("user", full_user);
+        return "profile";
+    }
+
+    @GetMapping("/{user}/profile")
+    public String getUserProfile(Model model, @PathVariable User user, @AuthenticationPrincipal User cur_user) {
+        if(user.getId().equals(cur_user.getId())) return "redirect:/user/profile";
+        model.addAttribute("is_guest", true);
         return "profile";
     }
 

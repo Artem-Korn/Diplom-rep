@@ -2,10 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TB - Редактор користувача</title>
+    <th:block th:replace="blocks/head.html :: head (page_name = 'Редагування користувача')"></th:block>
     <link rel="stylesheet" href="/css/common_style.css">
 </head>
 
@@ -19,7 +16,7 @@
 
             <div class="main__container-body">
 
-                <form th:action="@{/user}" th:method="post">
+                <form th:action="@{|/user/${user.id}/edit|}" th:method="post">
 
                     <label>
                         Логін :
@@ -39,7 +36,7 @@
             </div>
         </div>
     </main>
-    <footer th:insert="~{blocks/footer.html :: footer}"></footer>
+    <footer th:replace="~{blocks/footer.html :: footer}"></footer>
 </div>
 </body>
 

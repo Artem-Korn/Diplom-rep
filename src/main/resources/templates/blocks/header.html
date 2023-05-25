@@ -1,3 +1,4 @@
+<html xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <header th:fragment="header" class="header">
   <div class="header__container _container">
     <a class="header__container-logo" href="/home">
@@ -22,10 +23,10 @@
           Класи
         </a>
       </div>
-      <div class="link_container">
-        <a class="header__container-nav-link _help" href="/help">
-          <img src="/img/help.png" alt="" class="header__container-nav-link-icon">
-          Допомога
+      <div class="link_container" sec:authorize="hasAuthority('ADMIN')">
+        <a class="header__container-nav-link _help" href="/user">
+          <img src="/img/admin.png" alt="" class="header__container-nav-link-icon">
+          Адмін
         </a>
       </div>
       <div class="link_container">

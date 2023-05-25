@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
+
+<head>
+    <th:block th:replace="blocks/head.html :: head (page_name = 'Де більше?')"></th:block>
+    <link rel="stylesheet" href="/css/preloader.css">
+    <link rel="stylesheet" href="/css/game_style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <header th:insert="~{blocks/header.html :: header}"></header>
+        <main class="main">
+            <div class="main__container _container">
+                <h1>Де більше?</h1>
+                <h2>Налаштування</h2>
+                <form th:action="@{/games/createTask}" th:method="post" class="main__container-block">
+                    <input type="hidden" value="Де більше?" name="name">
+                    <input type="hidden" value="0" name="difficulty" id="difficulty">
+                    <div class="element">
+                        <label for="select_operation" class="element-label">
+                            Операції:
+                        </label>
+                        <select name="select_operation" id="select_operation" class="option-select"
+                                th:classappend="${task_option} ? '' : '_active'" disabled>
+
+                            <option th:if="${task_option}" th:value="${task_option[0]}" th:text="${task_option[0]}"/>
+                            <th:block th:unless="${task_option}">
+                                <option value="0">Немає</option>
+                                <option th:if="${isTeacher}" value="1">Випадкові</option>
+                                <option value="2">Додавання</option>
+                                <option value="3">Віднімання</option>
+                                <option value="4">Множення</option>
+                                <option value="5">Ділення</option>
+                            </th:block>
+                        </select>
+                    </div>
+                    <div class="element">
+                        <label for="select_max" class="element-label">
+                            Максимальне число:
+                        </label>
+                        <select name="select_max" id="select_max" class="option-select"
+                                th:classappend="${task_option} ? '' : '_active'" disabled>
+
+                            <option th:if="${task_option}" th:value="${task_option[1]}" th:text="${task_option[1]}"/>
+                            <th:block th:unless="${task_option}">
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                                <option th:if="${isTeacher}" value="50">50</option>
+                                <option th:if="${isTeacher}" value="100">100</option>
+                            </th:block>
+                        </select>
+                    </div>
+                    <div class="element">
+                        <label for="select_time" class="element-label">
+                            Час на виконання:
+                        </label>
+                        <select name="select_time" id="select_time" class="option-select"
+                                th:classappend="${task_option} ? '' : '_active'" disabled>
+
+                            <option th:if="${task_option}" th:value="${task_option[2]}" th:text="${task_option[2]}"/>
+                            <th:block th:unless="${task_option}">
+                                <option th:if="${isTeacher}" value="30">30с.</option>
+                                <option value="60">1хв.</option>
+                                <option value="120">2хв.</option>
+                                <option th:if="${isTeacher}" value="180">3хв.</option>
+                            </th:block>
+                        </select>
+                    </div>
+                    <div th:if="${isTeacher}" class="element">
+                        <input type="submit" class="element-button" id="btn_send" value="Надіслати завдання" />
+                    </div>
+                </form>
+                <h2>Ігровий екран</h2>
+                <div class="main__container-screen">
+                    <div id="screen">
+                        <div class="preloader" id="preloader">
+                            <div class="preloader__loader">
+                                <div class="loadingio-spinner-rolling-ndut8booj1a">
+                                    <div class="ldio-b56je0msj6i">
+                                        <div></div>
+                                    </div>
+                                </div>
+                                <span class="preloader__loader-status">
+                                </span>
+                            </div>
+                        </div>
+                        <canvas id="game_canvas"></canvas>
+                    </div>
+                    <form th:action="@{|/games/${task_id}/mark|}" th:method="post" class="main__container-screen-buttons" id="check_form">
+                        <input type="hidden" name="mark" id="mark" value="0"/>
+                        <input type="hidden" name="game" value="Де більше?">
+                        <div class="button_container" id="btn_start_container">
+                            <input type="button"
+                                   class="button_container-button _start_button"
+                                   id="btn_start"
+                                   value="Старт" />
+                        </div>
+                        <div class="button_container">
+                            <input th:type="${task_option} ? 'submit' : 'button'"
+                                   class="button_container-button _check_button"
+                                   id="btn_check"
+                                   value="Перевірка" disabled />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+        <footer th:replace="~{blocks/footer.html :: footer}"></footer>
+    </div>
+    <script src="/js/commonDesign.js"></script>
+    <script src="/js/compare/compareDesign.js"></script>
+    <script type="module" src="/js/compare/compareMain.js"></script>
+</body>
+
+</html>

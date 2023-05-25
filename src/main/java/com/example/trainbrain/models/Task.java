@@ -19,6 +19,11 @@ public class Task {
     @JoinColumn(name = "user_id")
     private User teacher;
 
+    private Integer difficulty;
+
+    @OneToMany(mappedBy = "task")
+    private Set<Mark> marks;
+
     @ManyToMany
     @JoinTable(
             name = "USER_TASK_TABLE",
@@ -29,10 +34,27 @@ public class Task {
 
     public Task() {}
 
-    public Task(String gameName, String options, User teacher) {
-        this.game_name = gameName;
+    public Task(String game_name, String options, User teacher, Integer difficulty) {
+        this.game_name = game_name;
         this.options = options;
         this.teacher = teacher;
+        this.difficulty = difficulty;
+    }
+
+    public Set<Mark> getMarks() {
+        return marks;
+    }
+
+    public void setMarks(Set<Mark> marks) {
+        this.marks = marks;
+    }
+
+    public Integer getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Integer difficulty) {
+        this.difficulty = difficulty;
     }
 
     public Long getId() {
@@ -43,11 +65,11 @@ public class Task {
         this.id = id;
     }
 
-    public String getGame_name() {
+    public String getGameName() {
         return game_name;
     }
 
-    public void setGame_name(String game_name) {
+    public void setGameName(String game_name) {
         this.game_name = game_name;
     }
 
@@ -69,5 +91,13 @@ public class Task {
 
     public String getTeacherName() {
         return teacher.getUsername();
+    }
+
+    public Set<User> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<User> students) {
+        this.students = students;
     }
 }

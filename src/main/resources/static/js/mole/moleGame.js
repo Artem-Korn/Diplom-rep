@@ -10,8 +10,11 @@ export class MoleGame {
             wait: false,
             is_demo: false,
             hide_grid: false,
+            hide_difficulty: 0,
             speed: 0,
+            speed_difficulty: 0,
             steps_count: 0,
+            steps_difficulty: 0,
             timer_id: 0
         }
 
@@ -43,7 +46,8 @@ export class MoleGame {
             width: 0,
             rows: 0,
             columns: 0,
-            color: "green"
+            color: "green",
+            grid_difficulty: 0
         }
 
         this.cell = {
@@ -125,9 +129,18 @@ export class MoleGame {
         }
     }
 
+    getDifficulty() {
+        return this.game.is_demo ? 0 : (Math.floor(((this.game.hide_difficulty +
+            this.game.speed_difficulty +
+            this.game.steps_difficulty +
+            this.grid.grid_difficulty) * 100) / 24));
+    }
+
     setGrid(rows, columns) {
         this.grid.rows = rows;
         this.grid.columns = columns;
+
+        this.grid.grid_difficulty = Number(rows) + Number(columns) - 4;
 
         this.mole.row = Math.floor(this.mole.index / this.grid.columns);
         this.mole.column = this.mole.index % this.grid.columns;
@@ -157,10 +170,12 @@ export class MoleGame {
 
     setStepsCount(steps_count) {
         this.game.steps_count = steps_count;
+        this.game.steps_difficulty = steps_count - 2;
     }
 
     setSpeed(speed) {
         this.game.speed = speed * 1000;
+        this.game.speed_difficulty = 6 - speed;
     }
 
     setIsDemo(is_demo) {
@@ -169,6 +184,7 @@ export class MoleGame {
 
     setHideGrid(hide_grid) {
         this.game.hide_grid = hide_grid !== '0';
+        this.game.hide_difficulty = this.game.hide_grid ? 5 : 0;
     }
 
     updateFrame(isHide) {
@@ -327,7 +343,20 @@ export class MoleGame {
         if (this.game.wait) {
             this.game.show = true;
             this.updateFrame(false);
-            return answer == (this.mole.index + 1) ? 1 : 0;
+
+            let answer_index = Number(answer) - 1;
+
+            if(answer_index === this.mole.index) {
+                return 100;
+            }
+            else {
+                let answer_row = Math.floor(answer_index / this.grid.columns);
+                let answer_column = answer_index % this.grid.columns;
+
+                if(Math.abs(this.mole.row - answer_row) <= 1 && Math.abs(this.mole.column - answer_column) <= 1) {
+                    return 50;
+                }
+            }
         }
         return 0;
     }

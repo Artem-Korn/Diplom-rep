@@ -42,30 +42,40 @@ function updateSize() {
 function updateGrid() {
     moleGame.setGrid(select_rows.value, select_columns.value);
     num_start_pos.max = select_rows.value * select_columns.value;
-    num_start_pos.value = 1;
+    if(num_start_pos.value > num_start_pos.max) num_start_pos.value = num_start_pos.max;
     updateStartPos();
 }
 
 function updateStepsCount() {
     moleGame.setStepsCount(select_steps_count.value);
+    updateDifficulty();
 }
 
 function updateSpeed() {
     moleGame.setSpeed(select_speed.value);
+    updateDifficulty();
 }
 
 function updateHideGrid() {
     moleGame.setHideGrid(select_hide.value);
+    updateDifficulty();
 }
 
 function updateIsDemo() {
     moleGame.setIsDemo(select_demo.value);
+    updateDifficulty();
 }
 
 function updateStartPos() {
     if (select_start_pos.value === '1') moleGame.setMoleIndex(num_start_pos.value);
     else moleGame.setRandomMoleIndex();
+    updateDifficulty();
 }
+
+function updateDifficulty() {
+    difficulty.value = moleGame.getDifficulty();
+}
+
 
 function updateGameStat() {
     moleGame.updateGameStat(btn_check);

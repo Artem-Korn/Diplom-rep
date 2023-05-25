@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
+
+<head>
+  <th:block th:replace="blocks/head.html :: head (page_name = 'Додати користувача')"></th:block>
+</head>
+
+<body>
+<div class="wrapper">
+  <header th:insert="~{blocks/header.html :: header}"></header>
+  <main class="main">
+    <div class="main__container _container">
+
+      <h1> Сторінка додавання користувачів </h1>
+
+      <form th:method="post" th:action="@{|/classes/${class.id}/inviteUser|}">
+
+        <div>
+          <label for="username">Логін : </label>
+          <input type="text" id="username" name="username"/>
+        </div>
+
+        <input type="submit" value="Додати користувача"/>
+      </form>
+
+    </div>
+  </main>
+  <footer th:replace="~{blocks/footer.html :: footer}"></footer>
+</div>
+</body>
+
+</html>

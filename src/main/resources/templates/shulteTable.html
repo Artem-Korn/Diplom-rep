@@ -2,15 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TB - Таблиця Шульте</title>
+    <th:block th:replace="blocks/head.html :: head (page_name = 'Таблиця Шульте')"></th:block>
     <link rel="stylesheet" href="/css/preloader.css">
-    <link rel="stylesheet" href="/css/common_style.css">
     <link rel="stylesheet" href="/css/game_style.css">
 </head>
 
@@ -24,87 +17,123 @@
                 <div id="option">
                     <form th:action="@{/games/createTask}" th:method="post" class="main__container-block">
                         <input type="hidden" value="Таблиця Шульте" name="name">
+                        <input type="hidden" value="0" name="difficulty" id="difficulty">
                         <div class="element">
                             <label for="select_rows" class="element-label">
                                 Кількість рядків:
                             </label>
-                            <select name="select_rows" id="select_rows" class="option-select _active">
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                                <option value="7">7</option>
+                            <select name="select_rows" id="select_rows" class="option-select"
+                                    th:classappend="${task_option} ? '' : '_active'" disabled>
+
+                                <option th:if="${task_option}" th:value="${task_option[0]}" th:text="${task_option[0]}"/>
+                                <th:block th:unless="${task_option}">
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                </th:block>
                             </select>
                         </div>
                         <div class="element">
                             <label for="select_columns" class="element-label">
                                 Кількість стовпців:
                             </label>
-                            <select name="select_columns" id="select_columns" class="option-select _active">
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                                <option value="7">7</option>
+                            <select name="select_columns" id="select_columns" class="option-select"
+                                    th:classappend="${task_option} ? '' : '_active'" disabled>
+
+                                <option th:if="${task_option}" th:value="${task_option[1]}" th:text="${task_option[1]}"/>
+                                <th:block th:unless="${task_option}">
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                </th:block>
                             </select>
                         </div>
                         <div class="element">
                             <label for="select_is_colorfull" class="element-label">
                                 Клітинки
                             </label>
-                            <select name="select_color" id="select_is_colorfull" class="option-select _active">
-                                <option value="0">Без кольору</option>
-                                <option value="1">Кольорові</option>
+                            <select name="select_color" id="select_is_colorfull" class="option-select"
+                                    th:classappend="${task_option} ? '' : '_active'" disabled>
+
+                                <option th:if="${task_option}" th:value="${task_option[2]}" id="task_option_1">Error</option>
+                                <th:block th:unless="${task_option}">
+                                    <option value="0">Без кольору</option>
+                                    <option value="1">Кольорові</option>
+                                </th:block>
                             </select>
                         </div>
                         <div class="element">
                             <label for="select_type" class="element-label">
                                 Тип завдання:
                             </label>
-                            <select name="select_type" id="select_type" class="option-select _active">
-                                <option value="sequence">Послідовність</option>
-                                <option th:if="${isTeacher}" value="counting">Підрахунок</option>
+                            <select name="select_type" id="select_type" class="option-select"
+                                    th:classappend="${task_option} ? '' : '_active'" disabled>
+
+                                <option th:if="${task_option}" th:value="${task_option[3]}" id="task_option_2">Error</option>
+                                <th:block th:unless="${task_option}">
+                                    <option value="0">Послідовність</option>
+                                    <option th:if="${isTeacher}" value="1">Підрахунок</option>
+                                </th:block>
                             </select>
                         </div>
                         <div class="element">
                             <label for="select_topic" class="element-label">
                                 Тема завдання:
                             </label>
-                            <select name="select_topic" id="select_topic" class="option-select _active">
-                                <option value="0" class="_sequence">Цифри</option>
-                                <option value="1" class="_sequence">Великі літери</option>
-                                <option value="2" class="_sequence">Малі літери</option>
-                                <option th:if="${isTeacher}" value="0" class="_counting">Фігури</option>
-                                <option th:if="${isTeacher}" value="1" class="_counting">Тварини</option>
+                            <select name="select_topic" id="select_topic" class="option-select"
+                                    th:classappend="${task_option} ? '' : '_active'" disabled>
+
+                                <option th:if="${task_option}" th:value="${task_option[4]}" id="task_option_3">Error</option>
+                                <th:block th:unless="${task_option}">
+                                    <option value="0" class="_sequence">Цифри</option>
+                                    <option value="1" class="_sequence">Великі літери</option>
+                                    <option value="2" class="_sequence">Малі літери</option>
+                                    <option th:if="${isTeacher}" value="0" class="_counting">Фігури</option>
+                                    <option th:if="${isTeacher}" value="1" class="_counting">Тварини</option>
+                                </th:block>
                             </select>
                         </div>
                         <div class="element _counting">
                             <label for="select_element_count" class="element-label">
                                 Кількість елементів пошуку:
                             </label>
-                            <select name="select_element_count" id="select_element_count" class="option-select _active">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
+                            <select name="select_element_count" id="select_element_count" class="option-select"
+                                    th:classappend="${task_option} ? '' : '_active'" disabled>
+
+                                <option th:if="${task_option}" th:value="${task_option[5]}" th:text="${task_option[5]}"/>
+                                <th:block th:unless="${task_option}">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                </th:block>
                             </select>
                         </div>
                         <div class="element">
                             <label for="select_time" class="element-label">
                                 Час демонстрації:
                             </label>
-                            <select name="select_time" id="select_time" class="option-select _active">
-                                <option value="5">5с.</option>
-                                <option value="10">10с.</option>
-                                <option value="15">15с.</option>
-                                <option value="20">20с.</option>
-                                <option value="25">25с.</option>
-                                <option value="30">30с.</option>
-                                <option value="40">40с.</option>
-                                <option value="50">50с.</option>
-                                <option value="60">1хв.</option>
+                            <select name="select_time" id="select_time" class="option-select"
+                                    th:classappend="${task_option} ? '' : '_active'" disabled>
+
+                                <option th:if="${task_option}" th:value="${task_option[6]}" id="task_option_4">Error</option>
+                                <th:block th:unless="${task_option}">
+                                    <option value="5">5с.</option>
+                                    <option value="10">10с.</option>
+                                    <option value="15">15с.</option>
+                                    <option value="20">20с.</option>
+                                    <option value="25">25с.</option>
+                                    <option value="30">30с.</option>
+                                    <option value="40">40с.</option>
+                                    <option value="50">50с.</option>
+                                    <option value="60">1хв.</option>
+                                </th:block>
                             </select>
                         </div>
                         <div th:if="${isTeacher}" class="element">
@@ -128,14 +157,19 @@
                         </div>
                         <canvas id="game_canvas"></canvas>
                     </div>
-                    <form th:action="@{/games/mark}" th:method="post" class="main__container-screen-buttons">
-                        <input type="hidden" name="mark" id="mark" />
+                    <form th:action="@{|/games/${task_id}/mark|}" th:method="post" class="main__container-screen-buttons" id="check_form">
+                        <input type="hidden" name="mark" id="mark" value="0"/>
+                        <input type="hidden" name="game" value="Таблиця Шульте">
                         <div class="button_container" id="btn_start_container">
-                            <input type="button" class="button_container-button _start_button" id="btn_start"
+                            <input type="button"
+                                   class="button_container-button _start_button"
+                                   id="btn_start"
                                    value="Старт" />
                         </div>
                         <div class="button_container">
-                            <input type="submit" class="button_container-button _check_button" id="btn_check"
+                            <input th:type="${task_option} ? 'submit' : 'button'"
+                                   class="button_container-button _check_button"
+                                   id="btn_check"
                                    value="Перевірка" disabled />
                         </div>
                     </form>
@@ -181,7 +215,7 @@
                 </div>
             </div>
         </main>
-        <footer th:insert="~{blocks/footer.html :: footer}"></footer>
+        <footer th:replace="~{blocks/footer.html :: footer}"></footer>
     </div>
     <script src="/js/commonDesign.js"></script>
     <script src="/js/shulte/shulteDesign.js"></script>

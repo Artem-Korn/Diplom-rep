@@ -2,11 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TB - Контроль користувачів</title>
-    <link rel="stylesheet" href="/css/common_style.css">
+    <th:block th:replace="blocks/head.html :: head (page_name = 'Контроль користувачів')"></th:block>
 </head>
 
 <body>
@@ -16,22 +12,30 @@
         <div class="main__container _container">
             <h1> Список існуючих користувачів </h1>
             <div class="main__container-body">
+<!--                <form th:method="post" th:action="@{user/filter}">-->
+<!--                    <input type="text" name="username" placeholder="Логін користувача">-->
+<!--                    <button type="submit">Знайти користувача</button>-->
+<!--                </form>-->
                 <table>
                     <tr>
                         <th>Логін</th>
                         <th>Ролі</th>
                         <th></th>
+                        <th></th>
                     </tr>
                     <tr th:each="user : ${users}">
                         <td th:text="${user.username}"/>
                         <td><div th:each="role : ${user.roles}" th:text="${role}"/></td>
-                        <td><a th:href="|/user/${user.id}|">Редагувати</a></td>
+                        <td><a th:href="@{|/user/${user.id}/edit|}">Редагувати</a></td>
+                        <td><form th:action="@{|/user/${user.id}/remove|}" th:method="post">
+                                <button type="submit">Видалити</button>
+                        </form></td>
                     </tr>
                 </table>
             </div>
         </div>
     </main>
-    <footer th:insert="~{blocks/footer.html :: footer}"></footer>
+    <footer th:replace="~{blocks/footer.html :: footer}"></footer>
 </div>
 </body>
 

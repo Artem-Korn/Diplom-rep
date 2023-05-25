@@ -1,9 +1,10 @@
 package com.example.trainbrain.service;
 
 import com.example.trainbrain.models.Role;
-import com.example.trainbrain.models.Task;
+import com.example.trainbrain.models.StudClass;
 import com.example.trainbrain.models.User;
 import com.example.trainbrain.repositories.UserRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -79,8 +80,8 @@ public class JpaUserDetailsService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public Iterable<User> findAll() {
-        return userRepository.findAll();
+    public Iterable<User> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     public List<User> findAllStudents() {
@@ -93,10 +94,20 @@ public class JpaUserDetailsService implements UserDetailsService {
         return students;
     }
 
-    public void sendTask(List<User> students, Task newTask) {
-        for (User student : students) {
-            student.getTasks().add(newTask);
-            userRepository.save(student);
+    public void removeUser(User user) {
+        userRepository.delete(user);
+    }
+
+    public List<User> findAllStudentsFromClasses(User teacher) {
+        Iterable<StudClass> studclasses = teacher.getMyStudclasses();
+        List<User> students = new ArrayList<>();
+
+        for (StudClass studclass : studclasses) {
+            for (User user : studclass.getStudents()) {
+                if (!students.contains(user))
+                    students.add(user);
+            }
         }
+        return students;
     }
 }

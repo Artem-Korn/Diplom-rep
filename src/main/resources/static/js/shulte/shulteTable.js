@@ -15,10 +15,13 @@ export class ShulteTable {
         this.game = {
             type: "",
             topic_index: 0,
+            count_difficulty: 0,
             show: false,
             wait: false,
             is_colorful: false,
+            is_colorful_difficulty: 0,
             time: 0,
+            time_difficulty: 0,
             timeout_id: 0
         }
 
@@ -27,7 +30,8 @@ export class ShulteTable {
             columns: 0,
             cell_w: 0,
             cell_h: 0,
-            colors: []
+            colors: [],
+            grid_difficulty: 0
         }
 
         this.sequence_topics = [];
@@ -105,13 +109,13 @@ export class ShulteTable {
         this.game.topic_index = topic_index;
 
         switch (this.game.type) {
-            case "sequence":
+            case "0":
                 this.header.task_0 = "Знайти усі "
                     + this.sequence_topics[this.game.topic_index].name
                     + " у порядку:";
                 this.header.task_1 = Math.floor(Math.random() * 2) === 0 ? "спадання" : "зростання"
                 return null;
-            case "counting":
+            case "1":
                 let opp_arr = this.counting_topics[this.game.topic_index].elements.slice();
                 if (opp_arr === undefined) throw new Error("Помилка у виборі виду завдання!");
                 let values_arr = [];
@@ -134,6 +138,7 @@ export class ShulteTable {
                     this.header.task_1 += values_arr[i] + ", ";
                 }
                 this.header.task_1 = this.header.task_1.slice(0, -2);
+                this.game.count_difficulty = element_count * 2;
                 return values_arr;
             default:
                 throw new Error("Помилка у виборі типу завдання!")
@@ -142,11 +147,19 @@ export class ShulteTable {
 
     setGameTime(game_time) {
         this.game.time = game_time * 1000;
+
+        if (Number(game_time) <= 30)
+            this.game.time_difficulty = 10 - Number(game_time) / 5;
+        else
+            this.game.time_difficulty = 10 - ((Number(game_time) / 10) + 3);
     }
 
     setGrid(rows, columns) {
         this.grid.rows = rows;
         this.grid.columns = columns;
+
+        this.grid.grid_difficulty = Number(rows) + Number(columns) - 4;
+
         this.grid.cell_w = this.canvas.width / columns;
         this.grid.cell_h = (this.canvas.height - this.header.height) / rows;
     }
@@ -159,7 +172,8 @@ export class ShulteTable {
             for (let index = 0; index < max_index; index++) {
                 this.grid.colors[index] = "hsl(" + Math.floor(Math.random() * 361) + ", 100%, 75%)";
             }
-        }
+            this.game.is_colorful_difficulty = 2;
+        } else this.game.is_colorful_difficulty = 0;
     }
 
     setSequence() {
@@ -188,6 +202,13 @@ export class ShulteTable {
         }
     }
 
+    getDifficulty() {
+        return this.game.type === '0' ? 0 : Math.floor(((this.game.time_difficulty +
+            this.game.is_colorful_difficulty +
+            this.game.count_difficulty +
+            this.grid.grid_difficulty) * 100) / 33);
+    }
+
     updateGameStat(timer_panel) {
         if (!this.isStarted()) {
 
@@ -214,10 +235,10 @@ export class ShulteTable {
             }, 1000);
 
             switch (this.game.type) {
-                case "sequence":
+                case "0":
                     this.setSequence();
                     break;
-                case "counting":
+                case "1":
                     this.setCounting();
                     break;
                 default:
@@ -238,19 +259,19 @@ export class ShulteTable {
             this.game.show = true;
 
             switch (this.game.type) {
-                case "sequence":
-                    return 0;
-                case "counting":
+                case "0":
+                    return -1;
+                case "1":
                     let searching_elem, correct_answer;
-                    let mark = 0;
+                    let right = 0;
 
                     for (let i = 0; i < this.selected_index_arr.length; i++) {
                         searching_elem = this.selected_index_arr[i];
                         correct_answer = this.created_value_arr
                             .reduce((count, item) => count + (item === searching_elem), 0);
-                        mark += (correct_answer === answers_arr[i].value);
+                        if (correct_answer === Number(answers_arr[i].value)) right++;
                     }
-                    return mark;
+                    return Math.floor(right * 100 / this.selected_index_arr.length);
                 default:
                     throw new Error("Помилка при старті! Невірний тип завдання!")
             }
@@ -307,10 +328,10 @@ export class ShulteTable {
     renderGame() {
         if (this.game.is_colorful) this.renderColorfulGrid();
         switch (this.game.type) {
-            case "sequence":
+            case "0":
                 this.renderSequence();
                 break;
-            case "counting":
+            case "1":
                 this.renderCounting();
                 break;
             default:

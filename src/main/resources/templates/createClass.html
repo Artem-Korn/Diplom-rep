@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
+
+<head>
+  <th:block th:replace="blocks/head.html :: head (page_name = 'Створити клас')"></th:block>
+</head>
+
+<body>
+<div class="wrapper">
+  <header th:insert="~{blocks/header.html :: header}"></header>
+  <main class="main">
+    <div class="main__container _container">
+
+      <h1> Сторінка створення класу </h1>
+
+      <form th:method="post" th:action="@{/classes/createClass}" th:object="${newClass}">
+
+        <div>
+          <label for="name">Назва : </label>
+          <input type="text" id="name" th:field="*{name}"/>
+        </div>
+
+        <input type="submit" value="Створити клас"/>
+      </form>
+
+    </div>
+  </main>
+  <footer th:replace="~{blocks/footer.html :: footer}"></footer>
+</div>
+</body>
+
+</html>

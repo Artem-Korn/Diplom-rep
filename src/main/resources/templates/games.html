@@ -2,11 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TB - Ігри</title>
-    <link rel="stylesheet" href="/css/common_style.css">
+    <th:block th:replace="blocks/head.html :: head (page_name = 'Ігри')"></th:block>
     <link rel="stylesheet" href="/css/games_style.css">
 </head>
 
@@ -18,20 +14,22 @@
                 <h1> Ігри </h1>
                 <h2> Завдання для Вас </h2>
                 <div class="elements">
-                    <a th:each="task : ${tasks}" class="elements__task" href="#">
+                    <a th:each="task : ${tasks}" class="elements__task" th:href="@{|/games/${task.id}/play|}"
+                       th:object="${task}">
+
                         <div class="elements__task-container">
                             <table class="elements__task-container-table">
                                 <tr>
-                                    <th>Вчитель:</th>
-                                    <td th:text="${task.getTeacherName()}"/>
-                                </tr>
-                                <tr>
-                                    <th>Опції:</th>
-                                    <td th:text="${task.getOptions()}"/>
-                                </tr>
-                                <tr>
                                     <th>Гра:</th>
-                                    <td th:text="${task.getGame_name()}"/>
+                                    <td th:text="*{gameName}"/>
+                                </tr>
+                                <tr>
+                                    <th>Складність:</th>
+                                    <td th:text="|*{difficulty}%|"/>
+                                </tr>
+                                <tr>
+                                    <th>Вчитель:</th>
+                                    <td th:text="|*{teacher.lastName} *{teacher.firstName[0]}. *{teacher.patronymic[0]}.|"/>
                                 </tr>
                             </table>
                         </div>
@@ -39,21 +37,18 @@
                 </div>
                 <h2 th:if="${isTeacher}"> Завдання від Вас </h2>
                 <div th:if="${isTeacher}" class="elements">
-                    <a th:each="myTask : ${myTasks}" class="elements__task" href="#">
+                    <a th:each="myTask : ${myTasks}" class="elements__task" th:href="@{|/games/${myTask.id}/edit|}"
+                       th:object="${myTask}">
+
                         <div class="elements__task-container">
                             <table class="elements__task-container-table">
                                 <tr>
-                                    <th>Вчитель:</th>
-                                    <td th:text="${myTask.getTeacherName()}"/>
-                                </tr>
-                                <tr>
-                                    <th>Опції:</th>
-<!--                                    <td th:text="${#strings.arraySplit(task.getOptions(), ';')[3]}"/>-->
-                                    <td th:text="${myTask.getOptions()}"/>
-                                </tr>
-                                <tr>
                                     <th>Гра:</th>
-                                    <td th:text="${myTask.getGame_name()}"/>
+                                    <td th:text="*{gameName}"/>
+                                </tr>
+                                <tr>
+                                    <th>Складність:</th>
+                                    <td th:text="|*{difficulty}%|"/>
                                 </tr>
                             </table>
                         </div>
@@ -77,10 +72,18 @@
                             <div class="elements__game-name">Знайди крота</div>
                         </div>
                     </a>
+                    <a class="elements__game" href="/games/compare">
+                        <div class="elements__game-container">
+                            <div class="elements__game-icon">
+                                <img src="/img/games/compare.jpg" alt="" class="elements__game-icon-img">
+                            </div>
+                            <div class="elements__game-name">Де більше?</div>
+                        </div>
+                    </a>
                 </div>
             </div>
         </main>
-        <footer th:insert="~{blocks/footer.html :: footer}"></footer>
+        <footer th:replace="~{blocks/footer.html :: footer}"></footer>
     </div>
 </body>
 

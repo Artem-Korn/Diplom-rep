@@ -2,35 +2,65 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${title}"/>
-    <link rel="stylesheet" href="/css/common_style.css">
-</head>
+    <th:block th:replace="blocks/head.html :: head (page_name = 'Профіль')"></th:block>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+        google.charts.load('current', {packages: ['corechart', 'line']});
+        google.charts.setOnLoadCallback(drawBackgroundColor);
 
+        function drawBackgroundColor() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', 'X');
+            data.addColumn('number', 'Таблиця Шульте');
+
+            data.addRows([
+                [0, 0],   [1, 10],  [2, 23]
+            ]);
+
+            var options = {
+                hAxis: { title: 'Дата виконання' },
+                vAxis: { title: 'Оцінка' },
+                backgroundColor: '#f1f8e9'
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+    </script>
+</head>
 <body>
     <div class="wrapper">
         <header th:insert="~{blocks/header.html :: header}"></header>
         <main class="main">
             <div class="main__container _container">
-                <h1> Мій профіль </h1>
-                <h2>[[${username}]]</h2>
+                <h1> Профіль </h1>
+                <h2> Користувач [[${user.username}]] </h2>
                 <div class="main__container-body">
-                    <form th:method="post" th:action="@{/user/profile}">
+                    <b><h3> Загальна інформація </h3></b>
+                    <div th:text="'Прізвище : ' + ${user.lastName}"></div>
+                    <div th:text="'Ім\'я : ' + ${user.firstName}"></div>
+                    <div th:text="'По батькові : ' + ${user.patronymic}"></div>
+                    <b th:unless="${is_guest}" ><h3> Зміна паролю </h3></b>
+                    <form th:unless="${is_guest}" th:method="post" th:action="@{/user/profile}">
                         <label for="password">Пароль : </label>
                         <input type="password" id="password" name="password"/>
 
                         <input type="submit" value="Зберігти зміни"/>
                     </form>
-                    <form th:action="@{/logout}" method="post">
+                    <b><h3> Оцінки </h3></b>
+                    <div id="chart_div"></div>
+                    <div th:each="mark : ${user.marks}">
+                        [[${mark.game}]]
+                        [[${mark.mark}]]
+                        [[${mark.date}]]
+                    </div>
+                    <form th:unless="${is_guest}" th:action="@{/logout}" method="post">
                         <input type="submit" value="Вийти з аккаунту"/>
                     </form>
                 </div>
             </div>
         </main>
-        <footer th:insert="~{blocks/footer.html :: footer}"></footer>
+        <footer th:replace="~{blocks/footer.html :: footer}"></footer>
     </div>
 </body>
-
 </html>

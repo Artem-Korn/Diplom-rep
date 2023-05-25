@@ -2,11 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TB - Реєстрація</title>
-  <link rel="stylesheet" href="/css/common_style.css">
+  <th:block th:replace="blocks/head.html :: head (page_name = 'Реєстрація')"></th:block>
 </head>
 
 <body>
@@ -28,6 +24,24 @@
         </div>
 
         <div>
+          <label for="first_name">Ім'я : </label>
+          <input type="text" id="first_name" th:field="*{firstName}"/>
+          <span th:if="${firstNameError}" th:text="${firstNameError}"/>
+        </div>
+
+        <div>
+          <label for="lastName">Прізвище : </label>
+          <input type="text" id="lastName" th:field="*{lastName}"/>
+          <span th:if="${lastNameError}" th:text="${lastNameError}"/>
+        </div>
+
+        <div>
+          <label for="patronymic">По батькові : </label>
+          <input type="text" id="patronymic" th:field="*{patronymic}"/>
+          <span th:if="${patronymicError}" th:text="${patronymicError}"/>
+        </div>
+
+        <div>
           <label for="password">Пароль : </label>
           <input type="password" id="password" th:field="*{password}"/>
           <span th:if="${passwordError}" th:text="${passwordError}"/>
@@ -44,7 +58,7 @@
 
     </div>
   </main>
-  <footer th:insert="~{blocks/footer.html :: footer}"></footer>
+  <footer th:replace="~{blocks/footer.html :: footer}"></footer>
 </div>
 </body>
 

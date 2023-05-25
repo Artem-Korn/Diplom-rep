@@ -4,17 +4,15 @@ import com.example.trainbrain.models.Role;
 import com.example.trainbrain.models.Task;
 import com.example.trainbrain.models.User;
 import com.example.trainbrain.service.JpaUserDetailsService;
+import com.example.trainbrain.service.MarkService;
 import com.example.trainbrain.service.TaskService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/games")
@@ -22,16 +20,18 @@ public class GameController {
 
     private final TaskService taskService;
     private final JpaUserDetailsService jpaUserDetailsService;
+    private final MarkService markService;
 
-    public GameController(TaskService taskService, JpaUserDetailsService jpaUserDetailsService) {
+    public GameController(TaskService taskService, JpaUserDetailsService jpaUserDetailsService, MarkService markService) {
         this.taskService = taskService;
         this.jpaUserDetailsService = jpaUserDetailsService;
+        this.markService = markService;
     }
 
     @GetMapping
     public String games(Model model, @AuthenticationPrincipal User user) {
         User full_user = jpaUserDetailsService.getUserById(user.getId());
-        model.addAttribute("isTeacher", user.getRoles().contains(Role.TEACHER));
+        model.addAttribute("isTeacher", full_user.getRoles().contains(Role.TEACHER));
         model.addAttribute("tasks", full_user.getTasks());
         model.addAttribute("myTasks", full_user.getMyTasks());
         return "games";
@@ -49,9 +49,21 @@ public class GameController {
         return "moleGame";
     }
 
-    @PostMapping("/mark")
-    public String getMark(@RequestParam("mark") Integer mark) {
-        System.out.println(mark);
+    @GetMapping("/compare")
+    public String compare(Model model, @AuthenticationPrincipal User user) {
+        model.addAttribute("isTeacher", user.getRoles().contains(Role.TEACHER));
+        return "compareGame";
+    }
+
+    @PostMapping("{task}/mark")
+    public String getMark(
+            @PathVariable Task task,
+            @AuthenticationPrincipal User user,
+            @RequestParam Integer mark,
+            @RequestParam String game
+    ) {
+        markService.createMark(mark, game, user, task);
+        taskService.removeUserTask(task, user);
         return "redirect:/games";
     }
 
@@ -59,21 +71,49 @@ public class GameController {
     public String createTask(
             @AuthenticationPrincipal User user,
             @RequestParam String name,
+            @RequestParam Integer difficulty,
             @RequestParam Map<String, String> form,
             Model model
     ) {
         User full_user = jpaUserDetailsService.getUserById(user.getId());
-        model.addAttribute("newTask", taskService.addTask(name, form, full_user));
-        model.addAttribute("students", jpaUserDetailsService.findAllStudents());
+        model.addAttribute("newTask", taskService.addTask(name, difficulty, form, full_user));
+        model.addAttribute("classes", full_user.getMyStudclasses());
         return "sendTask";
     }
 
-    @PostMapping("/sendTask")
-    public String sendTask(
-            @RequestParam Task newTask,
-            @RequestParam List<User> students
+    @GetMapping("{task}/edit")
+    public String userEditTask(
+            @AuthenticationPrincipal User user,
+            @PathVariable Task task,
+            Model model
     ) {
-        jpaUserDetailsService.sendTask(students, newTask);
+        User full_user = jpaUserDetailsService.getUserById(user.getId());
+        model.addAttribute("newTask", task);
+        model.addAttribute("classes", full_user.getMyStudclasses());
+        return "sendTask";
+    }
+
+    @PostMapping("/sendTask/{task}")
+    public String sendTask(
+            @PathVariable Task task,
+            @RequestParam(required = false) Set<User> students
+    ) {
+        taskService.sendTask(students, task);
         return "redirect:/games";
+    }
+
+    @PostMapping("/removeTask/{task}")
+    public String removeTask(
+            @PathVariable Task task
+    ) {
+        taskService.removeTask(task);
+        return "redirect:/games";
+    }
+
+    @GetMapping("{task}/play")
+    public String userPlayTask(@PathVariable Task task, Model model) {
+        model.addAttribute("task_id", task.getId());
+        model.addAttribute("task_option", taskService.getOptions(task));
+        return taskService.convertGameNameToTemplate(task.getGameName());
     }
 }

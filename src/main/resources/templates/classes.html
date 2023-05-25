@@ -2,11 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TB - Класи</title>
-    <link rel="stylesheet" href="/css/common_style.css">
+    <th:block th:replace="blocks/head.html :: head (page_name = 'Класи')"></th:block>
     <link rel="stylesheet" href="/css/classes_style.css">
 </head>
 
@@ -16,44 +12,56 @@
         <main class="main">
             <div class="main__container _container">
                 <h1> Мої класи </h1>
+                <h2> Класи, в яких ви є учасником </h2>
                 <div class="classes">
-                    <div class="classes__class">
-                        <a class="classes__class-name" id="drop_button">Клас вчителя Іванов І.І.</a>
-                        <table class="classes__class-table" id="drop_element">
+                    <div th:each="class : ${classes}" th:object="${class}" class="classes__class">
+                        <a th:text="|Клас *{name}, вчителя *{teacher.lastName} *{teacher.firstName[0]}. *{teacher.patronymic[0]}.|"
+                           class="classes__class-name"></a>
+                        <table class="classes__class-table">
                             <tr>
-                                <th>Учень</th>
-                                <th>Поле</th>
-                                <th>Поле</th>
-                                <th>Поле</th>
-                                <th>Поле</th>
+                                <th>Username</th>
                             </tr>
-                            <tr>
-                                <td>Петров П.П.</td>
-                                <td>Поле Петрова</td>
-                                <td>Поле Петрова</td>
-                                <td>Поле Петрова</td>
-                                <td>Поле Петрова</td>
-                            </tr>
-                            <tr>
-                                <td>Петров П.П.</td>
-                                <td>Поле Петрова</td>
-                                <td>Поле Петрова</td>
-                                <td>Поле Петрова</td>
-                                <td>Поле Петрова</td>
-                            </tr>
-                            <tr>
-                                <td>Петров П.П.</td>
-                                <td>Поле Петрова</td>
-                                <td>Поле Петрова</td>
-                                <td>Поле Петрова</td>
-                                <td>Поле Петрова</td>
+                            <tr th:each="student : *{students}">
+                                <td th:text="${student.username}"></td>
                             </tr>
                         </table>
+                        <td><form th:action="@{|/classes/*{id}/leaveClass|}" th:method="post">
+                            <input type="submit" value="Вийти з класу">
+                        </form></td>
                     </div>
+                </div>
+                <h2 th:if="${isTeacher}"> Класи, в яких ви є вчителем </h2>
+                <div th:if="${isTeacher}" class="classes">
+                    <div th:each="myClass : ${myClasses}" class="classes__class">
+                        <a th:text="${myClass.name}" class="classes__class-name"></a>
+                        <table class="classes__class-table">
+                            <tr>
+                                <th>Username</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            <tr th:each="student : ${myClass.students}">
+                                <td th:text="${student.username}"></td>
+                                <td>
+                                    <a th:href="@{|/user/${student.id}/profile|}">
+                                        Докладніше
+                                    </a>
+                                </td>
+                                <td><form th:action="@{|/classes/${myClass.id}/removeUser/${student.id}|}" th:method="post">
+                                    <input type="submit" value="Вигнати">
+                                </form></td>
+                            </tr>
+                        </table>
+                        <a th:href="@{|/classes/${myClass.id}/inviteUser|}">Додати користувача</a>
+                        <form th:action="@{|/classes/${myClass.id}/removeClass|}" th:method="post">
+                            <input type="submit" value="Видалити клас">
+                        </form>
+                    </div>
+                    <a th:href="@{/classes/createClass}">Створити клас</a>
                 </div>
             </div>
         </main>
-        <footer th:insert="~{blocks/footer.html :: footer}"></footer>
+        <footer th:replace="~{blocks/footer.html :: footer}"></footer>
     </div>
 </body>
 
