@@ -89,7 +89,7 @@
                         </div>
                         <canvas id="game_canvas"></canvas>
                     </div>
-                    <form th:action="@{|/games/${task_id}/mark|}" th:method="post" class="main__container-screen-buttons" id="check_form">
+                    <form th:action="@{|/games/mark/${task_id}|}" th:method="post" class="main__container-screen-buttons" id="check_form">
                         <input type="hidden" name="mark" id="mark" value="0"/>
                         <input type="hidden" name="game" value="Де більше?">
                         <div class="button_container" id="btn_start_container">

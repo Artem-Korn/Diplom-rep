@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
 
 <head>
-    <th:block th:replace="blocks/head.html :: head (page_name = 'Редагування користувача')"></th:block>
+    <th:block th:replace="~{blocks/head.html :: head (page_name = 'Редагування користувача')}"></th:block>
     <link rel="stylesheet" href="/css/common_style.css">
 </head>
 
@@ -16,21 +16,30 @@
 
             <div class="main__container-body">
 
-                <form th:action="@{|/user/${user.id}/edit|}" th:method="post">
-
-                    <label>
-                        Логін :
-                        <input type="text" th:value="*{user.username}" name="username">
-                    </label>
-
-                    <div th:each="role : ${roles}" >
-                        <label>
-                            <input type="checkbox" th:name="${role}" th:checked="${user.roles.contains(role)}">
-                            [[${role}]]
-                        </label>
+                <form th:action="@{/users/editUsername}" th:method="post">
+                    <div>
+                        <label for="username">Логін : </label>
+                        <input type="text" id="username" name="username" th:value="${user.username}"/>
+                        <span th:if="${usernameError}" th:text="${usernameError}"/>
                     </div>
 
-                    <input type="hidden" th:value="${user.id}" name="userId">
+                    <input type="hidden" name="user_id" th:value="${user.id}">
+                    <button type="submit">Зберігти зміни</button>
+                </form>
+
+                <form th:action="@{/users/editRoles}" th:method="post">
+                    <div>
+                        <span>Ролі : </span>
+                        <span th:each="role : ${roles}" >
+                            <label>
+                                <input type="checkbox" th:name="${role}" th:checked="${user.roles.contains(role)}">
+                                [[${role}]]
+                            </label>
+                        </span>
+                        <span th:if="${rolesError}" th:text="${rolesError}"/>
+                    </div>
+
+                    <input type="hidden" name="user_id" th:value="${user.id}">
                     <button type="submit">Зберігти зміни</button>
                 </form>
             </div>

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
 
 <head>
-    <th:block th:replace="blocks/head.html :: head (page_name = 'Ігри')"></th:block>
+    <th:block th:replace="~{blocks/head.html :: head (page_name = 'Ігри')}"></th:block>
     <link rel="stylesheet" href="/css/games_style.css">
 </head>
 
@@ -14,7 +14,7 @@
                 <h1> Ігри </h1>
                 <h2> Завдання для Вас </h2>
                 <div class="elements">
-                    <a th:each="task : ${tasks}" class="elements__task" th:href="@{|/games/${task.id}/play|}"
+                    <a th:each="task : ${tasks}" class="elements__task" th:href="@{|/games/play/${task.id}|}"
                        th:object="${task}">
 
                         <div class="elements__task-container">
@@ -37,7 +37,7 @@
                 </div>
                 <h2 th:if="${isTeacher}"> Завдання від Вас </h2>
                 <div th:if="${isTeacher}" class="elements">
-                    <a th:each="myTask : ${myTasks}" class="elements__task" th:href="@{|/games/${myTask.id}/edit|}"
+                    <a th:each="myTask : ${myTasks}" class="elements__task" th:href="@{|/games/edit/${myTask.id}|}"
                        th:object="${myTask}">
 
                         <div class="elements__task-container">

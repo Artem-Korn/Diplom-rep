@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
 
 <head>
-  <th:block th:replace="blocks/head.html :: head (page_name = 'Додати користувача')"></th:block>
+  <th:block th:replace="~{blocks/head.html :: head (page_name = 'Додати користувача')}"></th:block>
 </head>
 
 <body>
@@ -13,7 +13,7 @@
 
       <h1> Сторінка додавання користувачів </h1>
 
-      <form th:method="post" th:action="@{|/classes/${class.id}/inviteUser|}">
+      <form th:method="post" th:action="@{|/classes/inviteUser/${class.id}|}">
 
         <div>
           <label for="username">Логін : </label>

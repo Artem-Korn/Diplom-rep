@@ -211,7 +211,6 @@ export class ShulteTable {
 
     updateGameStat(timer_panel) {
         if (!this.isStarted()) {
-
             let counter = this.game.time / 1000;
             timer_panel.value = counter--;
             this.tick.play();

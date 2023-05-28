@@ -2,7 +2,6 @@ package com.example.trainbrain.controllers;
 
 import com.example.trainbrain.models.Role;
 import com.example.trainbrain.models.StudClass;
-import com.example.trainbrain.models.Task;
 import com.example.trainbrain.models.User;
 import com.example.trainbrain.service.JpaUserDetailsService;
 import com.example.trainbrain.service.StudClassService;
@@ -44,25 +43,25 @@ public class StudClassController {
         return "redirect:/classes";
     }
 
-    @PostMapping("{studclass}/removeClass")
+    @PostMapping("/removeClass/{studclass}")
     public String removeClass(@PathVariable StudClass studclass) {
         studClassService.removeClass(studclass);
         return "redirect:/classes";
     }
 
-    @GetMapping("{studclass}/inviteUser")
+    @GetMapping("/inviteUser/{studclass}")
     public String findUser(@PathVariable StudClass studclass, Model model) {
         model.addAttribute("class",studclass);
         return "findUser";
     }
 
-    @PostMapping("{studclass}/inviteUser")
+    @PostMapping("/inviteUser/{studclass}")
     public String inviteUser(@PathVariable StudClass studclass, @RequestParam String username) {
         studClassService.addUserToClass(studclass, (User) jpaUserDetailsService.loadUserByUsername(username));
         return "redirect:/classes";
     }
 
-    @PostMapping("{studclass}/removeUser/{user}")
+    @PostMapping("/removeUser/{studclass}/{user}")
     public String removeUser(
             @PathVariable StudClass studclass,
             @PathVariable User user
@@ -71,7 +70,7 @@ public class StudClassController {
         return "redirect:/classes";
     }
 
-    @PostMapping("{studclass}/leaveClass")
+    @PostMapping("/leaveClass/{studclass}")
     public String leaveClass(
             @PathVariable StudClass studclass,
             @AuthenticationPrincipal User user

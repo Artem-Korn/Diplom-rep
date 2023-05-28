@@ -4,6 +4,7 @@ import com.example.trainbrain.models.Role;
 import com.example.trainbrain.models.StudClass;
 import com.example.trainbrain.models.User;
 import com.example.trainbrain.repositories.UserRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -47,7 +48,7 @@ public class JpaUserDetailsService implements UserDetailsService {
     public boolean addUser(User user) {
         if(userRepository.existsByUsername(user.getUsername())) return false;
 
-        user.setRoles(Collections.singleton(Role.ADMIN));
+        user.setRoles(Collections.singleton(Role.STUDENT));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         userRepository.save(user);
@@ -55,8 +56,15 @@ public class JpaUserDetailsService implements UserDetailsService {
         return true;
     }
 
-    public void saveUser(User user, String username, Map<String, String> form) {
+    public boolean saveUserUsername(User user, String username) {
+        if(userRepository.existsByUsername(username)) return false;
         user.setUsername(username);
+        userRepository.save(user);
+        return true;
+    }
+
+    public boolean saveUserRoles(User user, Map<String, String> form) {
+        if(form.size() < 3) return false;
 
         Set<String> roles = Arrays.stream(Role.values())
                 .map(Role::name)
@@ -69,8 +77,8 @@ public class JpaUserDetailsService implements UserDetailsService {
                 user.getRoles().add(Role.valueOf(key));
             }
         }
-
         userRepository.save(user);
+        return true;
     }
 
     public void updateProfile(User user, String password) {
@@ -80,7 +88,7 @@ public class JpaUserDetailsService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public Iterable<User> findAll(Pageable pageable) {
+    public Page<User> findAll(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
 

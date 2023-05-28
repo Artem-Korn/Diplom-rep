@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
 
 <head>
-  <th:block th:replace="blocks/head.html :: head (page_name = 'Реєстрація')"></th:block>
+  <th:block th:replace="~{blocks/head.html :: head (page_name = 'Реєстрація')}"></th:block>
 </head>
 
 <body>
@@ -24,15 +24,15 @@
         </div>
 
         <div>
-          <label for="first_name">Ім'я : </label>
-          <input type="text" id="first_name" th:field="*{firstName}"/>
-          <span th:if="${firstNameError}" th:text="${firstNameError}"/>
-        </div>
-
-        <div>
           <label for="lastName">Прізвище : </label>
           <input type="text" id="lastName" th:field="*{lastName}"/>
           <span th:if="${lastNameError}" th:text="${lastNameError}"/>
+        </div>
+
+        <div>
+          <label for="first_name">Ім'я : </label>
+          <input type="text" id="first_name" th:field="*{firstName}"/>
+          <span th:if="${firstNameError}" th:text="${firstNameError}"/>
         </div>
 
         <div>

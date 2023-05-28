@@ -55,7 +55,7 @@ public class GameController {
         return "compareGame";
     }
 
-    @PostMapping("{task}/mark")
+    @PostMapping("/mark/{task}")
     public String getMark(
             @PathVariable Task task,
             @AuthenticationPrincipal User user,
@@ -81,7 +81,7 @@ public class GameController {
         return "sendTask";
     }
 
-    @GetMapping("{task}/edit")
+    @GetMapping("/edit/{task}")
     public String userEditTask(
             @AuthenticationPrincipal User user,
             @PathVariable Task task,
@@ -110,7 +110,7 @@ public class GameController {
         return "redirect:/games";
     }
 
-    @GetMapping("{task}/play")
+    @GetMapping("/play/{task}")
     public String userPlayTask(@PathVariable Task task, Model model) {
         model.addAttribute("task_id", task.getId());
         model.addAttribute("task_option", taskService.getOptions(task));

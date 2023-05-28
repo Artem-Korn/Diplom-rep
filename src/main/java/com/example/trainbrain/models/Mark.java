@@ -1,9 +1,8 @@
 package com.example.trainbrain.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "MARK_TABLE")
@@ -12,12 +11,11 @@ public class Mark {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String game;
+    private String game_name;
     private Integer mark;
     private Integer difficulty;
 
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd.MM.yyyy")
-    private Date date;
+    private LocalDateTime date;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -29,8 +27,8 @@ public class Mark {
 
     public Mark() {}
 
-    public Mark(String game, Integer mark, Integer difficulty, Date date, User user, Task task) {
-        this.game = game;
+    public Mark(String game_name, Integer mark, Integer difficulty, LocalDateTime date, User user, Task task) {
+        this.game_name = game_name;
         this.mark = mark;
         this.difficulty = difficulty;
         this.date = date;
@@ -46,20 +44,20 @@ public class Mark {
         return id;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
-    public String getGame() {
-        return game;
+    public String getGameName() {
+        return game_name;
     }
 
-    public void setGame(String game) {
-        this.game = game;
+    public void setGameName(String game) {
+        this.game_name = game;
     }
 
     public Integer getMark() {
@@ -93,4 +91,6 @@ public class Mark {
     public void setTask(Task task) {
         this.task = task;
     }
+
+
 }

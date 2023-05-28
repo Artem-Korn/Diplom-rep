@@ -2,28 +2,74 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
 
 <head>
-    <th:block th:replace="blocks/head.html :: head (page_name = 'Профіль')"></th:block>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript" th:inline="javascript">
+    <th:block th:replace="~{blocks/head.html :: head (page_name = 'Профіль')}"></th:block>
+    <script th:if="${is_teacher} or !${is_guest}" type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script th:if="${is_teacher} or !${is_guest}" type="text/javascript" th:inline="javascript">
         google.charts.load('current', {packages: ['corechart', 'line']});
-        google.charts.setOnLoadCallback(drawBackgroundColor);
+        google.charts.setOnLoadCallback(drowShulte);
+        google.charts.setOnLoadCallback(drowMole);
+        google.charts.setOnLoadCallback(drowCompare);
 
-        function drawBackgroundColor() {
-            var data = new google.visualization.DataTable();
-            data.addColumn('number', 'X');
-            data.addColumn('number', 'Таблиця Шульте');
-
+        function drowShulte() {
+            let data = new google.visualization.DataTable();
+            data.addColumn('date', 'X');
+            data.addColumn('number', 'Оцінка');
+            data.addColumn('number', 'Складність');
             data.addRows([
-                [0, 0],   [1, 10],  [2, 23]
+                /*[# th:each="row : ${chart_data.get('Таблиця Шульте')}"]*/
+                [new Date(/*[[${row[0]}]]*/), /*[[${row[1]}]]*/ 0, /*[[${row[2]}]]*/ 0],
+                /*[/]*/
             ]);
-
-            var options = {
-                hAxis: { title: 'Дата виконання' },
-                vAxis: { title: 'Оцінка' },
-                backgroundColor: '#f1f8e9'
+            let options = {
+                title : 'Таблиця Шульте',
+                hAxis: { format: 'dd.MM.yyyy', title: 'Дата виконання' },
+                pointSize: 10,
+                seriesType: 'line',
             };
 
-            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+            let chart = new google.visualization.ComboChart(document.getElementById('shulte_chart'));
+            chart.draw(data, options);
+        }
+
+        function drowMole() {
+            let data = new google.visualization.DataTable();
+            data.addColumn('date', 'X');
+            data.addColumn('number', 'Оцінка');
+            data.addColumn('number', 'Складність');
+            data.addRows([
+                /*[# th:each="row : ${chart_data.get('Знайди крота')}"]*/
+                [new Date(/*[[${row[0]}]]*/), /*[[${row[1]}]]*/ 0, /*[[${row[2]}]]*/ 0],
+                /*[/]*/
+            ]);
+            let options = {
+                title : 'Знайди крота',
+                hAxis: { format: 'dd.MM.yyyy', title: 'Дата виконання' },
+                pointSize: 10,
+                seriesType: 'line'
+            };
+
+            let chart = new google.visualization.ComboChart(document.getElementById('mole_chart'));
+            chart.draw(data, options);
+        }
+
+        function drowCompare() {
+            let data = new google.visualization.DataTable();
+            data.addColumn('date', 'X');
+            data.addColumn('number', 'Оцінка');
+            data.addColumn('number', 'Складність');
+            data.addRows([
+                /*[# th:each="row : ${chart_data.get('Де більше?')}"]*/
+                [new Date(/*[[${row[0]}]]*/), /*[[${row[1]}]]*/ 0, /*[[${row[2]}]]*/ 0],
+                /*[/]*/
+            ]);
+            let options = {
+                title : 'Де більше?',
+                hAxis: { format: 'dd.MM.yyyy', title: 'Дата виконання' },
+                pointSize: 10,
+                seriesType: 'line'
+            };
+
+            let chart = new google.visualization.ComboChart(document.getElementById('compare_chart'));
             chart.draw(data, options);
         }
     </script>
@@ -33,30 +79,59 @@
         <header th:insert="~{blocks/header.html :: header}"></header>
         <main class="main">
             <div class="main__container _container">
-                <h1> Профіль </h1>
-                <h2> Користувач [[${user.username}]] </h2>
+                <h1> Профіль користувача [[${user.username}]]</h1>
                 <div class="main__container-body">
-                    <b><h3> Загальна інформація </h3></b>
-                    <div th:text="'Прізвище : ' + ${user.lastName}"></div>
-                    <div th:text="'Ім\'я : ' + ${user.firstName}"></div>
-                    <div th:text="'По батькові : ' + ${user.patronymic}"></div>
-                    <b th:unless="${is_guest}" ><h3> Зміна паролю </h3></b>
-                    <form th:unless="${is_guest}" th:method="post" th:action="@{/user/profile}">
-                        <label for="password">Пароль : </label>
-                        <input type="password" id="password" name="password"/>
+                    <div>
+                        <h2> Загальна інформація  </h2>
 
-                        <input type="submit" value="Зберігти зміни"/>
-                    </form>
-                    <b><h3> Оцінки </h3></b>
-                    <div id="chart_div"></div>
-                    <div th:each="mark : ${user.marks}">
-                        [[${mark.game}]]
-                        [[${mark.mark}]]
-                        [[${mark.date}]]
+                        <div th:text="'Прізвище : ' + ${user.lastName}"></div>
+                        <div th:text="'Ім\'я : ' + ${user.firstName}"></div>
+                        <div th:text="'По батькові : ' + ${user.patronymic}"></div>
+
+                        <h3 th:unless="${is_guest}"> Зміна паролю </h3>
+
+                        <form th:unless="${is_guest}" th:method="post" th:action="@{/user/profile}">
+                            <label for="password">Пароль : </label>
+                            <input type="password" id="password" name="password"/>
+
+                            <input type="submit" value="Зберігти зміни"/>
+                        </form>
+                        <form th:unless="${is_guest}" th:action="@{/logout}" method="post">
+                            <input type="submit" value="Вийти з аккаунту"/>
+                        </form>
                     </div>
-                    <form th:unless="${is_guest}" th:action="@{/logout}" method="post">
-                        <input type="submit" value="Вийти з аккаунту"/>
-                    </form>
+
+                    <div th:if="${is_teacher} or !${is_guest}">
+                        <h2> Результати роботи </h2>
+
+                        <div id="shulte_chart" style="height: 400px"></div>
+                        <div id="mole_chart" style="height: 400px"></div>
+                        <div id="compare_chart" style="height: 400px"></div>
+                    </div>
+
+                    <div th:if="${is_teacher} or !${is_guest}">
+                        <h2> Історія роботи користувача  </h2>
+
+                        <ul th:if="${page.getTotalPages() > 0}">
+                            <li th:each="page_number : ${page_numbers}" th:class="${page_number == page.number} ? active">
+                                <a th:href="@{|/users/profile/${user.id}?page=${page_number}|}" th:text="${page_number + 1}"/>
+                            </li>
+                        </ul>
+                        <table>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Гра</th>
+                                <th>Оцінка</th>
+                                <th>Складність</th>
+                            </tr>
+                            <tr th:each="mark : ${page.content}">
+                                <td th:text="${#temporals.format(mark.date, 'dd.MM.yyyy (hh:mm)')}"/>
+                                <td  th:text="${mark.gameName}"/>
+                                <td th:text="${mark.mark} < 0 ? 'Зроблено' : ${mark.mark}"/>
+                                <td th:text="${mark.difficulty}"/>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </main>

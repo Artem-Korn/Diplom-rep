@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
 
 <head>
-    <th:block th:replace="blocks/head.html :: head (page_name = 'Таблиця Шульте')"></th:block>
+    <th:block th:replace="~{blocks/head.html :: head (page_name = 'Таблиця Шульте')}"></th:block>
     <link rel="stylesheet" href="/css/preloader.css">
     <link rel="stylesheet" href="/css/game_style.css">
 </head>
@@ -157,7 +157,7 @@
                         </div>
                         <canvas id="game_canvas"></canvas>
                     </div>
-                    <form th:action="@{|/games/${task_id}/mark|}" th:method="post" class="main__container-screen-buttons" id="check_form">
+                    <form th:action="@{|/games/mark/${task_id}|}" th:method="post" class="main__container-screen-buttons" id="check_form">
                         <input type="hidden" name="mark" id="mark" value="0"/>
                         <input type="hidden" name="game" value="Таблиця Шульте">
                         <div class="button_container" id="btn_start_container">
