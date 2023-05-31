@@ -5,15 +5,16 @@ import com.example.trainbrain.models.User;
 import com.example.trainbrain.repositories.StudClassRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class StudClassService {
 
     private final StudClassRepository studClassRepository;
-    private final TaskService taskService;
 
-    public StudClassService(StudClassRepository studClassRepository, TaskService taskService) {
+    public StudClassService(StudClassRepository studClassRepository) {
         this.studClassRepository = studClassRepository;
-        this.taskService = taskService;
     }
 
     public void addClass(StudClass studclass, User user) {
@@ -33,5 +34,11 @@ public class StudClassService {
 
     public void removeClass(StudClass studclass) {
         studClassRepository.delete(studclass);
+    }
+
+    public List<StudClass> getStudClassesFromTeacher(User teacher) {
+        return teacher.getMyStudclasses().stream()
+                .sorted((s1, s2) -> s1.getName().compareTo(s2.getName()))
+                .collect(Collectors.toList());
     }
 }

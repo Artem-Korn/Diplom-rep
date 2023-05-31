@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/classes")
 public class StudClassController {
@@ -26,8 +28,12 @@ public class StudClassController {
     public String classes(Model model, @AuthenticationPrincipal User user) {
         User full_user = jpaUserDetailsService.getUserById(user.getId());
         model.addAttribute("isTeacher", full_user.getRoles().contains(Role.TEACHER));
-        model.addAttribute("myClasses", full_user.getMyStudclasses());
-        model.addAttribute("classes", full_user.getStudclasses());
+
+        model.addAttribute("myClasses", full_user.getMyStudclasses().stream()
+                .sorted((c1, c2) -> c1.getName().compareTo(c2.getName())));
+
+        model.addAttribute("classes", full_user.getStudclasses().stream()
+                .sorted((c1, c2) -> c1.getName().compareTo(c2.getName())));
         return "classes";
     }
 
@@ -56,8 +62,30 @@ public class StudClassController {
     }
 
     @PostMapping("/inviteUser/{studclass}")
-    public String inviteUser(@PathVariable StudClass studclass, @RequestParam String username) {
-        studClassService.addUserToClass(studclass, (User) jpaUserDetailsService.loadUserByUsername(username));
+    public String inviteUser(
+            @PathVariable StudClass studclass,
+            @RequestParam String username,
+            Model model
+    ) {
+        Optional<User> new_student = jpaUserDetailsService.getUserByUsername(username);
+        if(new_student.isPresent()) {
+            if(new_student.get().getStudclasses().contains(studclass)) {
+                model.addAttribute("class",studclass);
+                model.addAttribute(
+                        "userError",
+                        "Користувач «" + username +
+                                "» вже є учасником класу «" + studclass.getName() + "»"
+                );
+                return "findUser";
+            }
+            else {
+                studClassService.addUserToClass(studclass, new_student.get());
+            }
+        }else {
+            model.addAttribute("class",studclass);
+            model.addAttribute("loginError",username);
+            return "findUser";
+        }
         return "redirect:/classes";
     }
 

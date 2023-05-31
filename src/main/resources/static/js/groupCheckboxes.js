@@ -1,14 +1,33 @@
-Array.from(document.querySelectorAll('.all_check'))
-    .forEach(e => e.addEventListener('change', checkGroup));
+Array.from(document.querySelectorAll('.group_check'))
+    .forEach(e => {
+        e.addEventListener('change', checkGroup);
+        e.parentNode.parentNode.parentNode.addEventListener('click', () => {
+            e.checked = !e.checked;
+            checkGroup.call(e);
+        });
+    });
 
-Array.from(document.querySelectorAll('.checkbox'))
+Array.from(document.querySelectorAll('.single_checkbox'))
     .forEach(e => {
         e.addEventListener('change', checkSingle);
+        e.parentNode.parentNode.parentNode.addEventListener('click', () => {
+            e.checked = !e.checked;
+            checkSingle.call(e);
+        });
         checkSingle.call(e);
     });
 
+// Array.from(document.querySelectorAll('.tr_checkbox'))
+//     .forEach(e => {
+//         e.addEventListener('click', tr => {
+//             let checkboxes = tr.getElementsByClassName('checkbox')
+//         });
+//     });
+
 function checkGroup(){
-    Array.from(this.parentNode.parentNode.querySelectorAll('.checkbox'))
+    let table = this.parentNode.parentNode.parentNode.parentNode;
+
+    Array.from(table.querySelectorAll('.single_checkbox'))
         .forEach(e => {
             if(e.checked !== this.checked) {
                 e.checked = this.checked
@@ -18,7 +37,9 @@ function checkGroup(){
 }
 
 function checkSingle(){
-    Array.from(this.parentNode.parentNode.parentNode.querySelectorAll('.checkbox'))
+    let table = this.parentNode.parentNode.parentNode.parentNode.parentNode;
+
+    Array.from(table.parentNode.querySelectorAll('.single_checkbox'))
         .forEach(e => {
             if(e.value === this.value && e.checked !== this.checked) {
                 e.checked = this.checked;
@@ -26,8 +47,8 @@ function checkSingle(){
             }
         });
 
-    let checkboxes = Array.from(this.parentNode.parentNode.querySelectorAll('.checkbox'));
-    let group_checkbox = this.parentNode.parentNode.querySelector('.all_check');
+    let checkboxes = Array.from(table.querySelectorAll('.single_checkbox'));
+    let group_checkbox = table.querySelector('.group_check');
 
     let is_checked = checkboxes[0].checked;
     let is_changed = false;

@@ -15,7 +15,7 @@ window.addEventListener("load", () => {
 
 window.addEventListener("resize", screenUpdate);
 
-btn_start.addEventListener("click", function () {
+document.getElementById("btn_start").addEventListener("click", function () {
     const btn_check = document.getElementById("btn_check");
     if (this.classList.contains("_clicked")) {
         disabledAll(false);
@@ -34,9 +34,9 @@ btn_start.addEventListener("click", function () {
     }
 });
 
-btn_check.addEventListener("click", function() {
+document.getElementById("btn_check").addEventListener("click", function() {
     if(!is_task) btn_check.disabled = true;
-})
+});
 
 if(is_task) {
     document.getElementById("check_form").onsubmit = function (e) {
@@ -46,7 +46,24 @@ if(is_task) {
             body: new FormData(this)
         });
         btn_check.disabled = true;
+        modal_mark.innerHTML = mark.value > -1 ? mark.value : 'Зроблено';
+        modal_result.classList.add("open");
     }
+
+    window.addEventListener('keydown', (e) => {
+        if(e.key === 'Escape') modal_result.classList.remove("open");
+    });
+
+    document.getElementById("modal_content").addEventListener('click', (e) => {
+        e._isClickWithInModal = true;
+    });
+    document.getElementById("modal_result").addEventListener('click', (e) => {
+        if(!e._isClickWithInModal) e.currentTarget.classList.remove("open");
+    });
+
+    document.getElementById("modal_close").addEventListener("click", function() {
+        modal_result.classList.remove("open");
+    });
 }
 
 function disabledAll(disabled) {

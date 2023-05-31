@@ -13,15 +13,23 @@
 
       <h1> Сторінка створення класу </h1>
 
-      <form th:method="post" th:action="@{/classes/createClass}" th:object="${newClass}">
-
-        <div>
-          <label for="name">Назва : </label>
-          <input type="text" id="name" th:field="*{name}"/>
-        </div>
-
-        <input type="submit" value="Створити клас"/>
-      </form>
+      <section class="tb_section">
+        <form class="tb_form" th:method="post" th:action="@{/classes/createClass}" th:object="${newClass}">
+          <div class="tb_table_info-border">
+            <table class="tb_table_info">
+              <tr>
+                <td><label for="name">Назва </label></td>
+                <td><input class="tb_input" type="text" id="name" th:field="*{name}"/></td>
+              </tr>
+              <tr>
+                <td class="tb_td_active" colspan="2">
+                  <input class="tb_button _green" type="submit" value="Створити клас"/>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </form>
+      </section>
 
     </div>
   </main>

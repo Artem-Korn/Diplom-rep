@@ -3,7 +3,6 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    margin-right: -20px;
 }
 
 .elements__task {
@@ -11,8 +10,7 @@
     height: 100px;
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
-    margin-right: 20px;
+    margin: 20px 20px 20px 0;
 }
 
 .elements__task-container {

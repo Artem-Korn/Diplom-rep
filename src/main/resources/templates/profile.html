@@ -3,7 +3,8 @@
 
 <head>
     <th:block th:replace="~{blocks/head.html :: head (page_name = 'Профіль')}"></th:block>
-    <script th:if="${is_teacher} or !${is_guest}" type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script th:if="${is_teacher} or !${is_guest}" type="text/javascript"
+            src="https://www.gstatic.com/charts/loader.js"></script>
     <script th:if="${is_teacher} or !${is_guest}" type="text/javascript" th:inline="javascript">
         google.charts.load('current', {packages: ['corechart', 'line']});
         google.charts.setOnLoadCallback(drowShulte);
@@ -21,10 +22,14 @@
                 /*[/]*/
             ]);
             let options = {
-                title : 'Таблиця Шульте',
-                hAxis: { format: 'dd.MM.yyyy', title: 'Дата виконання' },
+                legend: {
+                    position: 'top'
+                },
+                title: 'Таблиця Шульте',
+                hAxis: {format: 'dd.MM.yyyy', title: 'Дата виконання'},
                 pointSize: 10,
                 seriesType: 'line',
+                explorer: {axis: 'horizontal', maxZoomIn: .05}
             };
 
             let chart = new google.visualization.ComboChart(document.getElementById('shulte_chart'));
@@ -42,10 +47,14 @@
                 /*[/]*/
             ]);
             let options = {
-                title : 'Знайди крота',
-                hAxis: { format: 'dd.MM.yyyy', title: 'Дата виконання' },
+                legend: {
+                    position: 'top'
+                },
+                title: 'Знайди крота',
+                hAxis: {format: 'dd.MM.yyyy', title: 'Дата виконання'},
                 pointSize: 10,
-                seriesType: 'line'
+                seriesType: 'line',
+                explorer: {axis: 'horizontal', maxZoomIn: .05}
             };
 
             let chart = new google.visualization.ComboChart(document.getElementById('mole_chart'));
@@ -63,79 +72,123 @@
                 /*[/]*/
             ]);
             let options = {
-                title : 'Де більше?',
-                hAxis: { format: 'dd.MM.yyyy', title: 'Дата виконання' },
+                legend: {
+                    position: 'top'
+                },
+                title: 'Де більше?',
+                hAxis: {format: 'dd.MM.yyyy', title: 'Дата виконання'},
                 pointSize: 10,
-                seriesType: 'line'
+                seriesType: 'line',
+                explorer: {axis: 'horizontal', maxZoomIn: .05}
             };
 
             let chart = new google.visualization.ComboChart(document.getElementById('compare_chart'));
             chart.draw(data, options);
         }
+
+        window.addEventListener("resize", function () {
+            drowShulte();
+            drowMole();
+            drowCompare();
+        });
     </script>
 </head>
 <body>
-    <div class="wrapper">
-        <header th:insert="~{blocks/header.html :: header}"></header>
-        <main class="main">
-            <div class="main__container _container">
-                <h1> Профіль користувача [[${user.username}]]</h1>
-                <div class="main__container-body">
-                    <div>
-                        <h2> Загальна інформація  </h2>
+<div class="wrapper">
+    <header th:insert="~{blocks/header.html :: header}"></header>
+    <main class="main">
+        <div class="main__container _container">
+            <h1> Профіль користувача </h1>
+            <div class="main__container-body">
 
-                        <div th:text="'Прізвище : ' + ${user.lastName}"></div>
-                        <div th:text="'Ім\'я : ' + ${user.firstName}"></div>
-                        <div th:text="'По батькові : ' + ${user.patronymic}"></div>
+                <section class="tb_section _flex">
+                    <h2> Загальна інформація </h2>
 
-                        <h3 th:unless="${is_guest}"> Зміна паролю </h3>
+                    <table class="tb_table_info">
+                        <tr th:if="${is_teacher}">
+                            <th>Логін :</th>
+                            <td th:text="${user.username}"></td>
+                        </tr>
+                        <tr>
+                            <th>Прізвище :</th>
+                            <td th:text="${user.lastName}"></td>
+                        </tr>
+                        <tr>
+                            <th>Ім'я :</th>
+                            <td th:text="${user.firstName}"></td>
+                        </tr>
+                        <tr>
+                            <th>По батькові :</th>
+                            <td th:text="${user.patronymic}"></td>
+                        </tr>
+                    </table>
+                    <form th:unless="${is_guest}" th:action="@{/logout}" method="post">
+                        <input class="tb_button _red tb_margin" type="submit" value="Вийти з аккаунту"/>
+                    </form>
+                </section>
 
-                        <form th:unless="${is_guest}" th:method="post" th:action="@{/user/profile}">
-                            <label for="password">Пароль : </label>
-                            <input type="password" id="password" name="password"/>
+                <section th:unless="${is_guest}" class="tb_section _flex">
+                    <h2> Зміна паролю </h2>
 
-                            <input type="submit" value="Зберігти зміни"/>
-                        </form>
-                        <form th:unless="${is_guest}" th:action="@{/logout}" method="post">
-                            <input type="submit" value="Вийти з аккаунту"/>
-                        </form>
-                    </div>
+                    <form class="tb_form" th:method="post" th:action="@{/users/profile/editPassword}">
+                        <div class="tb_table_info-border">
+                            <table class="tb_table_info">
+                                <tr>
+                                    <td><label for="password_new">Новий пароль </label></td>
+                                    <td><input class="tb_input" type="password" id="password_new" name="password_new"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="tb_td_active" colspan="2">
+                                        <input class="tb_button _green" type="submit" value="Зберігти зміни"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </form>
+                </section>
 
-                    <div th:if="${is_teacher} or !${is_guest}">
-                        <h2> Результати роботи </h2>
+                <section th:if="${is_teacher} or !${is_guest}" id="history" class="tb_section">
+                    <h2> Історія роботи </h2>
 
-                        <div id="shulte_chart" style="height: 400px"></div>
-                        <div id="mole_chart" style="height: 400px"></div>
-                        <div id="compare_chart" style="height: 400px"></div>
-                    </div>
-
-                    <div th:if="${is_teacher} or !${is_guest}">
-                        <h2> Історія роботи користувача  </h2>
-
-                        <ul th:if="${page.getTotalPages() > 0}">
-                            <li th:each="page_number : ${page_numbers}" th:class="${page_number == page.number} ? active">
-                                <a th:href="@{|/users/profile/${user.id}?page=${page_number}|}" th:text="${page_number + 1}"/>
-                            </li>
-                        </ul>
-                        <table>
+                    <div class="tb_table-responsive">
+                        <table class="tb_table">
                             <tr>
                                 <th>Дата</th>
                                 <th>Гра</th>
-                                <th>Оцінка</th>
+                                <th>Результат</th>
                                 <th>Складність</th>
                             </tr>
                             <tr th:each="mark : ${page.content}">
                                 <td th:text="${#temporals.format(mark.date, 'dd.MM.yyyy (hh:mm)')}"/>
-                                <td  th:text="${mark.gameName}"/>
+                                <td th:text="${mark.gameName}"/>
                                 <td th:text="${mark.mark} < 0 ? 'Зроблено' : ${mark.mark}"/>
                                 <td th:text="${mark.difficulty}"/>
                             </tr>
                         </table>
                     </div>
-                </div>
+
+                    <div class="tb_pages-container">
+                        <ul class="tb_pages" th:if="${page.getTotalPages() > 0}">
+                            <li th:each="page_number : ${page_numbers}">
+                                <a th:class="${page_number == page.number} ? active"
+                                   th:href="@{|/users/profile/${user.id}?page=${page_number}#history|}"
+                                   th:text="${page_number + 1}"/>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+
+                <section class="tb_section" th:if="${is_teacher} or !${is_guest}">
+                    <h2> Графіки результатів роботи </h2>
+                    <div class="tb_chart" id="shulte_chart"></div>
+                    <div class="tb_chart" id="mole_chart"></div>
+                    <div class="tb_chart" id="compare_chart"></div>
+                </section>
             </div>
-        </main>
-        <footer th:replace="~{blocks/footer.html :: footer}"></footer>
-    </div>
+        </div>
+    </main>
+    <footer th:replace="~{blocks/footer.html :: footer}"></footer>
+</div>
 </body>
 </html>

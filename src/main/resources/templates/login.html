@@ -2,38 +2,47 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
 
 <head>
-  <th:block th:replace="~{blocks/head.html :: head (page_name = 'Вхід')}"></th:block>
+    <th:block th:replace="~{blocks/head.html :: head (page_name = 'Вхід')}"></th:block>
 </head>
 
 <body>
 <div class="wrapper">
-  <header th:insert="~{blocks/header.html :: header}"></header>
-  <main class="main">
-    <div class="main__container _container">
-      <h1> Сторінка входу </h1>
+    <header th:insert="~{blocks/header.html :: header}"></header>
+    <main class="main">
+        <div class="main__container _container">
+            <h1> Сторінка входу </h1>
 
-      <div th:if="${param.error}">Неправильний логін чи пароль.</div>
-      <div th:if="${param.logout}">Ви вийшли з аккаунту.</div>
+            <div th:if="${param.error}" class="tb_error">Неправильний логін чи пароль.</div>
+            <div th:if="${param.logout}" class="tb_attention">Ви вийшли з аккаунту.</div>
 
-      <form th:method="post" th:action="@{/login}">
-
-        <div>
-          <label for="username">Логін : </label>
-          <input type="text" id="username" name="username"/>
+            <section class="tb_section">
+                <form class="tb_form" th:method="post" th:action="@{/login}">
+                    <div class="tb_table_info-border">
+                        <table class="tb_table_info">
+                            <tr>
+                                <td><label for="username">Логін </label></td>
+                                <td><input class="tb_input" type="text" id="username" name="username"/></td>
+                            </tr>
+                            <tr>
+                                <td><label for="password">Пароль </label></td>
+                                <td><input class="tb_input" type="password" id="password" name="password"/></td>
+                            </tr>
+                            <tr>
+                                <td class="tb_td_active" colspan="2"><input class="tb_button _green" type="submit"
+                                                                            value="Увійти"/></td>
+                            </tr>
+                            <tr>
+                                <td class="tb_td_active" colspan="2"><a class="tb_button _orange"
+                                                                        th:href="@{/registration}">Створити аккаунт</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
+            </section>
         </div>
-
-        <div>
-          <label for="password">Пароль : </label>
-          <input type="password" id="password" name="password"/>
-        </div>
-
-        <input type="submit" value="Увійти"/>
-      </form>
-
-      <a th:href="@{/registration}">Створити аккаунт</a>
-    </div>
-  </main>
-  <footer th:replace="~{blocks/footer.html :: footer}"></footer>
+    </main>
+    <footer th:replace="~{blocks/footer.html :: footer}"></footer>
 </div>
 </body>
 

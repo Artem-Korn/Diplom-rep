@@ -81,11 +81,11 @@ public class JpaUserDetailsService implements UserDetailsService {
         return true;
     }
 
-    public void updateProfile(User user, String password) {
-        if(!StringUtils.isEmpty(password)) {
-            user.setPassword(passwordEncoder.encode(password));
+    public void updateProfile(User user, String password_new) {
+        if(!StringUtils.isEmpty(password_new)) {
+            user.setPassword(passwordEncoder.encode(password_new));
+            userRepository.save(user);
         }
-        userRepository.save(user);
     }
 
     public Page<User> findAll(Pageable pageable) {
@@ -117,5 +117,13 @@ public class JpaUserDetailsService implements UserDetailsService {
             }
         }
         return students;
+    }
+
+    public Page<User> findAllByUsernameContains(String username, Pageable pageable) {
+        return userRepository.findAllByUsernameContains(username, pageable);
+    }
+
+    public Optional<User> getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }

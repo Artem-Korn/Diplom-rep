@@ -7,62 +7,97 @@
 </head>
 
 <body>
-    <div class="wrapper">
-        <header th:insert="~{blocks/header.html :: header}"></header>
-        <main class="main">
-            <div class="main__container _container">
-                <h1> Мої класи </h1>
+<div class="wrapper">
+    <header th:insert="~{blocks/header.html :: header}"></header>
+    <main class="main">
+        <div class="main__container _container">
+            <h1> Мої класи </h1>
+
+            <section th:if="${#lists.size(classes) > 0}" class="tb_section">
                 <h2> Класи, в яких ви є учасником </h2>
-                <div class="classes">
-                    <div th:each="class : ${classes}" th:object="${class}" class="classes__class">
-                        <a th:text="|Клас *{name}, вчителя *{teacher.lastName} *{teacher.firstName[0]}. *{teacher.patronymic[0]}.|"
-                           class="classes__class-name"></a>
-                        <table class="classes__class-table">
-                            <tr>
-                                <th>Username</th>
-                            </tr>
-                            <tr th:each="student : *{students}">
-                                <td th:text="${student.username}"></td>
-                            </tr>
-                        </table>
-                        <td><form th:action="@{|/classes/leaveClass/*{id}|}" th:method="post">
-                            <input type="submit" value="Вийти з класу">
-                        </form></td>
-                    </div>
+
+                <div class="tb_table-responsive">
+                    <table class="tb_table">
+                        <tr>
+                            <th>Назва класу</th>
+                            <th>Вчитель</th>
+                            <th></th>
+                        </tr>
+                        <tr th:each="class : ${classes}" th:object="${class}">
+                            <td th:text="*{name}"/>
+                            <td th:text="|*{teacher.lastName} *{teacher.firstName} *{teacher.patronymic}|"/>
+                            <td class="tb_td_active">
+                                <form th:action="@{|/classes/leaveClass/*{id}|}" th:method="post">
+                                    <input class="tb_button _red" type="submit" value="Вийти з класу">
+                                </form>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
-                <h2 th:if="${isTeacher}"> Класи, в яких ви є вчителем </h2>
-                <div th:if="${isTeacher}" class="classes">
-                    <div th:each="myClass : ${myClasses}" class="classes__class">
-                        <a th:text="${myClass.name}" class="classes__class-name"></a>
-                        <table class="classes__class-table">
-                            <tr>
-                                <th>Username</th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                            <tr th:each="student : ${myClass.students}">
-                                <td th:text="${student.username}"></td>
-                                <td>
-                                    <a th:href="@{|/users/profile/${student.id}|}">
-                                        Докладніше
-                                    </a>
-                                </td>
-                                <td><form th:action="@{|/classes/removeUser/${myClass.id}/${student.id}|}" th:method="post">
-                                    <input type="submit" value="Вигнати">
-                                </form></td>
-                            </tr>
-                        </table>
-                        <a th:href="@{|/classes/inviteUser/${myClass.id}|}">Додати користувача</a>
-                        <form th:action="@{|/classes/removeClass/${myClass.id}|}" th:method="post">
-                            <input type="submit" value="Видалити клас">
-                        </form>
-                    </div>
-                    <a th:href="@{/classes/createClass}">Створити клас</a>
+            </section>
+
+            <section th:if="${isTeacher}" class="tb_section">
+                <h2> Класи, в яких ви є вчителем </h2>
+
+                <form class="tb_padding" th:action="@{/classes/createClass}">
+                    <input class="tb_button _orange" type="submit" value="Створити клас">
+                </form>
+
+                <div th:each="myClass : ${myClasses}" th:object="${myClass}" class="tb_table-responsive tb_margin">
+                    <table class="tb_table">
+                        <tr class="class_name">
+                            <th colspan="2"
+                                th:text="'Клас «' + *{name} + '» (учасників: ' + *{#lists.size(students)} + ')'"/>
+                            <th class="tb_td_active">
+                                <a class="tb_button _green" th:href="@{|/classes/inviteUser/*{id}|}">
+                                    Додати користувача
+                                </a>
+                            </th>
+                            <th class="tb_td_active">
+                                <form th:action="@{|/classes/removeClass/*{id}|}" th:method="post">
+                                    <input class="tb_button _red" type="submit" value="Видалити клас">
+                                </form>
+                            </th>
+                        </tr>
+                        <tr class="_additional _hide" th:unless="*{#lists.size(students) == 0}">
+                            <th class="_additional_th">Логін</th>
+                            <th class="_additional_th">ПІБ</th>
+                            <th class="_additional_th"></th>
+                            <th class="_additional_th"></th>
+                        </tr>
+                        <tr class="_additional _hide" th:each="student : ${myClass.students}" th:object="${student}">
+                            <td th:text="*{username}"/>
+                            <td th:text="|*{lastName} *{firstName} *{patronymic}|"/>
+                            <td class="tb_td_active">
+                                <a class="tb_button _yellow" th:href="@{|/users/profile/${student.id}|}">
+                                    Докладніше
+                                </a>
+                            </td>
+                            <td class="tb_td_active">
+                                <form th:action="@{|/classes/removeUser/${myClass.id}/${student.id}|}" th:method="post">
+                                    <input class="tb_button _orange" type="submit" value="Видалити">
+                                </form>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
-            </div>
-        </main>
-        <footer th:replace="~{blocks/footer.html :: footer}"></footer>
-    </div>
+            </section>
+        </div>
+    </main>
+    <footer th:replace="~{blocks/footer.html :: footer}"></footer>
+
+    <script type="text/javascript">
+        Array.from(document.getElementsByClassName("class_name"))
+            .forEach(e => {
+                e.addEventListener('click', () => {
+                    Array.from(e.parentElement.getElementsByClassName('_additional'))
+                        .forEach(e => {
+                            e.classList.toggle('_hide');
+                        })
+                });
+            });
+    </script>
+</div>
 </body>
 
 </html>

@@ -6,6 +6,7 @@ import com.example.trainbrain.repositories.TaskRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
@@ -59,5 +60,17 @@ public class TaskService {
     public void removeUserTask(Task task, User user) {
         task.getStudents().removeIf(u -> (Objects.equals(u.getId(), user.getId())));
         taskRepository.save(task);
+    }
+
+    public List<Task> getTasksFromStudent(User student) {
+        return student.getTasks().stream()
+                .sorted((t1, t2) -> t1.getTeacher().getLastName().compareTo(t2.getTeacher().getLastName()))
+                .collect(Collectors.toList());
+    }
+
+    public List<Task> getTasksFromTeacher(User teacher) {
+        return teacher.getTasks().stream()
+                .sorted((t1, t2) -> t1.getGameName().compareTo(t2.getGameName()))
+                .collect(Collectors.toList());
     }
 }

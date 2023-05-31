@@ -13,9 +13,10 @@
         <main class="main">
             <div class="main__container _container">
                 <h1>Знайди Крота</h1>
-                <h2>Налаштування</h2>
                 <div id="option">
                     <form th:action="@{/games/createTask}" th:method="post" class="main__container-block">
+                        <h2>Налаштування</h2>
+
                         <input type="hidden" value="Знайди крота" name="name">
                         <input type="hidden" value="0" name="difficulty" id="difficulty">
                         <div class="element">
@@ -135,7 +136,6 @@
                         </div>
                     </form>
                 </div>
-                <h2>Ігровий екран</h2>
                 <div class="main__container-screen">
                     <div id="screen">
                         <div class="preloader" id="preloader">
@@ -168,8 +168,10 @@
                         </div>
                     </form>
                 </div>
-                <h2 class="_counting">Ваші відповіді</h2>
+
                 <div class="main__container-block _counting">
+                    <h2 class="_counting">Ваші відповіді</h2>
+
                     <div class="element _answer">
                         <label class="element-label _count_elem">
                             Позиція крота:
@@ -177,6 +179,9 @@
                         <input id="answer" class="element-input _check" type="number" value="0" min="0" max="49">
                     </div>
                 </div>
+                <th:block th:if="${task_option}">
+                    <div th:replace="~{blocks/modalMark.html :: modal_mark}"></div>
+                </th:block>
             </div>
         </main>
         <footer th:replace="~{blocks/footer.html :: footer}"></footer>

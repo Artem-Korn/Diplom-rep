@@ -37,7 +37,7 @@ export class ShulteTable {
         this.sequence_topics = [];
 
         let numbers = [];
-        for (let i = 0; i < 49; i++) { numbers[i] = i + 1 }
+        for (let i = 0; i < 49; i++) { numbers.push(i + 1); }
         let alphabet = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ";
 
         this.sequence_topics.push({
@@ -209,47 +209,51 @@ export class ShulteTable {
             this.grid.grid_difficulty) * 100) / 33);
     }
 
-    updateGameStat(timer_panel) {
-        if (!this.isStarted()) {
-            let counter = this.game.time / 1000;
+    startGame(timer_panel) {
+        let counter = this.game.time / 1000;
+        timer_panel.value = counter--;
+        this.tick.play();
+        this.game.show = true;
+
+        this.game.interval_id = setInterval(() => {
             timer_panel.value = counter--;
-            this.tick.play();
-            this.game.show = true;
 
-            this.game.interval_id = setInterval(() => {
-                timer_panel.value = counter--;
-
-                if (counter >= 0) {
-                    this.tick.play();
-                }
-                else if (counter < 0) {
-                    clearInterval(this.game.interval_id);
-                    this.bell.play();
-                    timer_panel.classList.remove("_timer");
-                    timer_panel.value = "Перевірка";
-                    timer_panel.disabled = false;
-                    this.game.show = false;
-                    this.game.wait = true;
-                }
-            }, 1000);
-
-            switch (this.game.type) {
-                case "0":
-                    this.setSequence();
-                    break;
-                case "1":
-                    this.setCounting();
-                    break;
-                default:
-                    throw new Error("Помилка при старті! Невірний тип завдання!")
+            if (counter >= 0) {
+                this.tick.play();
             }
+            else if (counter < 0) {
+                clearInterval(this.game.interval_id);
+                this.bell.play();
+                timer_panel.classList.remove("_timer");
+                timer_panel.value = "Перевірка";
+                timer_panel.disabled = false;
+                this.game.show = false;
+                this.game.wait = true;
+            }
+        }, 1000);
+
+        switch (this.game.type) {
+            case "0":
+                this.setSequence();
+                break;
+            case "1":
+                this.setCounting();
+                break;
+            default:
+                throw new Error("Помилка при старті! Невірний тип завдання!")
         }
-        else {
-            clearInterval(this.game.interval_id);
-            timer_panel.value = "Перевірка";
-            this.game.show = false;
-            this.game.wait = false;
-        }
+    }
+
+    stopGame(timer_panel) {
+        clearInterval(this.game.interval_id);
+        timer_panel.value = "Перевірка";
+        this.game.show = false;
+        this.game.wait = false;
+    }
+
+    updateGameStat(timer_panel) {
+        if (!this.isStarted()) this.startGame(timer_panel)
+        else this.stopGame(timer_panel);
     }
 
     checkGame(answers_arr) {
@@ -268,9 +272,16 @@ export class ShulteTable {
                         searching_elem = this.selected_index_arr[i];
                         correct_answer = this.created_value_arr
                             .reduce((count, item) => count + (item === searching_elem), 0);
-                        if (correct_answer === Number(answers_arr[i].value)) right++;
+
+                        if (correct_answer === Number(answers_arr[i].value)) right += 100;
+                        else {
+                            let ans = Number(answers_arr[i].value);
+                            let error = Math.abs(correct_answer - ans);
+
+                            if(error < 10 && ans >= 0) right += (10 - error) * 10;
+                        }
                     }
-                    return Math.floor(right * 100 / this.selected_index_arr.length);
+                    return Math.floor(right * 100 / (this.selected_index_arr.length * 100));
                 default:
                     throw new Error("Помилка при старті! Невірний тип завдання!")
             }

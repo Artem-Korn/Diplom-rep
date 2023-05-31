@@ -14,7 +14,6 @@ public class Mark {
     private String game_name;
     private Integer mark;
     private Integer difficulty;
-
     private LocalDateTime date;
 
     @ManyToOne

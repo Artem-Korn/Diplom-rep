@@ -38,7 +38,7 @@ public class RegistrationController {
     ) {
         boolean isConfirmEmpty = StringUtils.isEmpty(passwordConfirm);
         if(isConfirmEmpty) {
-            model.addAttribute("passwordError", "Пароль підтвердження не може бути порожнім");
+            model.addAttribute("password2Error", "Пароль підтвердження не може бути порожнім");
         }
         if(user.getPassword() != null && !Objects.equals(user.getPassword(), passwordConfirm)) {
             model.addAttribute("passwordError", "Паролі не співпадають");

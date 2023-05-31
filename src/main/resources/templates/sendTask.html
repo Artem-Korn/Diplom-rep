@@ -12,42 +12,77 @@
     <main class="main">
         <div class="main__container _container">
             <h1> Форма редагування завдання </h1>
-            <h2> Завдання: </h2>
-            <div th:text="'Гра : ' + ${newTask.gameName}"></div>
-            <div th:text="'Складність : ' + ${newTask.difficulty} + '%'"></div>
-            <h2> Кому відправити </h2>
-            <form th:action="@{|/games/sendTask/${newTask.id}|}" th:method="post">
-                <div th:each="class : ${classes}">
-                    <label>
-                        <input type="checkbox" name="classes" class="all_check" th:value="${class.id}">
-                        [[${class.name}]]
-                    </label><br>
-                    <label th:each="student : ${class.students}">
-                        <input type="checkbox" name="students" class="checkbox" th:value="${student.id}"
-                               th:checked="${newTask.students.contains(student)}">
-                        [[${student.username}]]
-                    </label>
-                </div>
-                <input type="submit" value="Задати завдання вибраним студентам">
-            </form>
-            <form th:action="@{|/games/removeTask/${newTask.id}|}" th:method="post">
-                <input type="submit" value="Видалити завдання">
-            </form>
-            <h2> Історія виконання </h2>
-            <table>
-                <tr>
-                    <th>Логін</th>
-                    <th>ФІО</th>
-                    <th>Дата виконання</th>
-                    <th>Оцінка</th>
-                </tr>
-                <tr th:each="mark : ${newTask.marks}" th:object="${mark.user}">
-                    <td th:text="*{username}"/>
-                    <td th:text="|*{lastName} *{firstName[0]}. *{patronymic[0]}.|"></td>
-                    <td th:text="${mark.date}"></td>
-                    <td th:text="${mark.mark < 0 ? 'Зроблено' : mark.mark}"></td>
-                </tr>
-            </table>
+
+            <section class="tb_section _flex">
+                <h2> Завдання: </h2>
+
+                <table class="tb_table_info">
+                    <tr>
+                        <th>Гра :</th>
+                        <td th:text="${newTask.gameName}"></td>
+                    </tr>
+                    <tr>
+                        <th>Складність :</th>
+                        <td th:text="${newTask.difficulty} + '%'"></td>
+                    </tr>
+                </table>
+                <form th:action="@{|/games/removeTask/${newTask.id}|}" th:method="post">
+                    <input class="tb_button _red tb_margin" type="submit" value="Видалити завдання">
+                </form>
+            </section>
+
+            <section class="tb_section">
+                <h2 class="tb_margin"> Кому доступне </h2>
+                <form class="_flex" th:action="@{|/games/sendTask/${newTask.id}|}" th:method="post">
+                    <table class="tb_table tb_margin" th:each="class : ${classes}">
+                        <tr>
+                            <th colspan="4">
+                                <label>
+                                    <input type="checkbox" name="classes" class="group_check" th:value="${class.id}">
+                                    Учні класу «[[${class.name}]]»
+                                </label>
+                            </th>
+                        </tr>
+                        <tr class="_additional">
+                            <th class="_additional_th">Логін</th>
+                            <th class="_additional_th">Прізвище</th>
+                            <th class="_additional_th">Ім'я</th>
+                            <th class="_additional_th">По батькові</th>
+                        </tr>
+                        <tr th:each="student : ${class.students}">
+                            <td>
+                                <label>
+                                    <input type="checkbox" name="students" class="single_checkbox" th:value="${student.id}"
+                                           th:checked="${newTask.students.contains(student)}">
+                                    [[${student.username}]]
+                                </label>
+                            </td>
+                            <td th:text="${student.lastName}"/>
+                            <td th:text="${student.firstName}"/>
+                            <td th:text="${student.patronymic}"/>
+                        </tr>
+                    </table>
+                    <input class="tb_button _yellow tb_margin" type="submit" value="Оновити доступ до завдання">
+                </form>
+            </section>
+
+            <section class="tb_section">
+                <h2> Історія виконання </h2>
+                <table class="tb_table">
+                    <tr>
+                        <th>Логін</th>
+                        <th>ФІО</th>
+                        <th>Дата виконання</th>
+                        <th>Результат</th>
+                    </tr>
+                    <tr th:each="mark : ${newTask.marks}" th:object="${mark.user}">
+                        <td th:text="*{username}"/>
+                        <td th:text="|*{lastName} *{firstName[0]}. *{patronymic[0]}.|"></td>
+                        <td th:text="${#temporals.format(mark.date, 'dd.MM.yyyy (hh:mm)')}"/>
+                        <td th:text="${mark.mark < 0 ? 'Зроблено' : mark.mark}"></td>
+                    </tr>
+                </table>
+            </section>
         </div>
     </main>
     <footer th:replace="~{blocks/footer.html :: footer}"></footer>

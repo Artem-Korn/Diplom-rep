@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="uk" th:xmllang="uk">
 
 <head>
-    <th:block th:replace="blocks/head.html :: head (page_name = 'Де більше?')"></th:block>
+    <th:block th:replace="~{blocks/head.html :: head (page_name = 'Де більше?')}"></th:block>
     <link rel="stylesheet" href="/css/preloader.css">
     <link rel="stylesheet" href="/css/game_style.css">
 </head>
@@ -13,8 +13,10 @@
         <main class="main">
             <div class="main__container _container">
                 <h1>Де більше?</h1>
-                <h2>Налаштування</h2>
+
                 <form th:action="@{/games/createTask}" th:method="post" class="main__container-block">
+                    <h2>Налаштування</h2>
+
                     <input type="hidden" value="Де більше?" name="name">
                     <input type="hidden" value="0" name="difficulty" id="difficulty">
                     <div class="element">
@@ -73,7 +75,6 @@
                         <input type="submit" class="element-button" id="btn_send" value="Надіслати завдання" />
                     </div>
                 </form>
-                <h2>Ігровий екран</h2>
                 <div class="main__container-screen">
                     <div id="screen">
                         <div class="preloader" id="preloader">
@@ -106,6 +107,9 @@
                         </div>
                     </form>
                 </div>
+                <th:block th:if="${task_option}">
+                    <div th:replace="~{blocks/modalMark.html :: modal_mark}"></div>
+                </th:block>
             </div>
         </main>
         <footer th:replace="~{blocks/footer.html :: footer}"></footer>

@@ -12,75 +12,85 @@
         <main class="main">
             <div class="main__container _container">
                 <h1> Ігри </h1>
-                <h2> Завдання для Вас </h2>
-                <div class="elements">
-                    <a th:each="task : ${tasks}" class="elements__task" th:href="@{|/games/play/${task.id}|}"
-                       th:object="${task}">
 
-                        <div class="elements__task-container">
-                            <table class="elements__task-container-table">
-                                <tr>
-                                    <th>Гра:</th>
-                                    <td th:text="*{gameName}"/>
-                                </tr>
-                                <tr>
-                                    <th>Складність:</th>
-                                    <td th:text="|*{difficulty}%|"/>
-                                </tr>
-                                <tr>
-                                    <th>Вчитель:</th>
-                                    <td th:text="|*{teacher.lastName} *{teacher.firstName[0]}. *{teacher.patronymic[0]}.|"/>
-                                </tr>
-                            </table>
-                        </div>
-                    </a>
-                </div>
-                <h2 th:if="${isTeacher}"> Завдання від Вас </h2>
-                <div th:if="${isTeacher}" class="elements">
-                    <a th:each="myTask : ${myTasks}" class="elements__task" th:href="@{|/games/edit/${myTask.id}|}"
-                       th:object="${myTask}">
+                <section th:if="${#lists.size(tasks) > 0}" class="tb_section">
+                    <h2> Завдання для Вас </h2>
+                    <div class="elements">
+                        <a th:each="task : ${tasks}" class="elements__task" th:href="@{|/games/play/${task.id}|}"
+                           th:object="${task}">
 
-                        <div class="elements__task-container">
-                            <table class="elements__task-container-table">
-                                <tr>
-                                    <th>Гра:</th>
-                                    <td th:text="*{gameName}"/>
-                                </tr>
-                                <tr>
-                                    <th>Складність:</th>
-                                    <td th:text="|*{difficulty}%|"/>
-                                </tr>
-                            </table>
-                        </div>
-                    </a>
-                </div>
-                <h2> Вільний режим </h2>
-                <div class="elements">
-                    <a class="elements__game" href="/games/shulte">
-                        <div class="elements__game-container">
-                            <div class="elements__game-icon">
-                                <img src="/img/games/table.png" alt="" class="elements__game-icon-img">
+                            <div class="elements__task-container">
+                                <table class="elements__task-container-table">
+                                    <tr>
+                                        <th>Гра:</th>
+                                        <td th:text="*{gameName}"/>
+                                    </tr>
+                                    <tr>
+                                        <th>Складність:</th>
+                                        <td th:text="|*{difficulty}%|"/>
+                                    </tr>
+                                    <tr>
+                                        <th>Вчитель:</th>
+                                        <td th:text="|*{teacher.lastName} *{teacher.firstName[0]}. *{teacher.patronymic[0]}.|"/>
+                                    </tr>
+                                </table>
                             </div>
-                            <div class="elements__game-name">Таблиця Шульте</div>
-                        </div>
-                    </a>
-                    <a class="elements__game" href="/games/mole">
-                        <div class="elements__game-container">
-                            <div class="elements__game-icon">
-                                <img src="/img/games/mole.jpg" alt="" class="elements__game-icon-img">
+                        </a>
+                    </div>
+                </section>
+
+                <section th:if="${isTeacher} and ${#lists.size(myTasks) > 0}" class="tb_section">
+                    <h2> Завдання від Вас </h2>
+                    <div class="elements">
+                        <a th:each="myTask : ${myTasks}" class="elements__task" th:href="@{|/games/edit/${myTask.id}|}"
+                           th:object="${myTask}">
+
+                            <div class="elements__task-container">
+                                <table class="elements__task-container-table">
+                                    <tr>
+                                        <th>Гра:</th>
+                                        <td th:text="*{gameName}"/>
+                                    </tr>
+                                    <tr>
+                                        <th>Складність:</th>
+                                        <td th:text="|*{difficulty}%|"/>
+                                    </tr>
+                                </table>
                             </div>
-                            <div class="elements__game-name">Знайди крота</div>
-                        </div>
-                    </a>
-                    <a class="elements__game" href="/games/compare">
-                        <div class="elements__game-container">
-                            <div class="elements__game-icon">
-                                <img src="/img/games/compare.jpg" alt="" class="elements__game-icon-img">
+                        </a>
+                    </div>
+                </section>
+
+                <section class="tb_section">
+                    <h2 class="tb_margin"> Вільний режим </h2>
+
+                    <div class="elements">
+                        <a class="elements__game" href="/games/shulte">
+                            <div class="elements__game-container">
+                                <div class="elements__game-icon">
+                                    <img src="/img/games/table.png" alt="" class="elements__game-icon-img">
+                                </div>
+                                <div class="elements__game-name">Таблиця Шульте</div>
                             </div>
-                            <div class="elements__game-name">Де більше?</div>
-                        </div>
-                    </a>
-                </div>
+                        </a>
+                        <a class="elements__game" href="/games/mole">
+                            <div class="elements__game-container">
+                                <div class="elements__game-icon">
+                                    <img src="/img/games/mole.jpg" alt="" class="elements__game-icon-img">
+                                </div>
+                                <div class="elements__game-name">Знайди крота</div>
+                            </div>
+                        </a>
+                        <a class="elements__game" href="/games/compare">
+                            <div class="elements__game-container">
+                                <div class="elements__game-icon">
+                                    <img src="/img/games/compare.jpg" alt="" class="elements__game-icon-img">
+                                </div>
+                                <div class="elements__game-name">Де більше?</div>
+                            </div>
+                        </a>
+                    </div>
+                </section>
             </div>
         </main>
         <footer th:replace="~{blocks/footer.html :: footer}"></footer>

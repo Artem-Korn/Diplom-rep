@@ -33,9 +33,15 @@ public class UserController {
     @GetMapping
     public String userList(
             Model model,
-            @PageableDefault(sort = {"username"}, direction = Sort.Direction.ASC) Pageable pageable
+            @PageableDefault(sort = {"username"}, direction = Sort.Direction.ASC) Pageable pageable,
+            @RequestParam(required = false, defaultValue = "") String username
     ) {
-        Page<User> page = jpaUserDetailsService.findAll(pageable);
+        Page<User> page;
+
+        if (username.isEmpty()) page = jpaUserDetailsService.findAll(pageable);
+        else page = jpaUserDetailsService.findAllByUsernameContains(username, pageable);
+
+        model.addAttribute("username", username);
         model.addAttribute("page", page);
         model.addAttribute("page_numbers", IntStream.range(0, page.getTotalPages()).toArray());
         return "userList";
@@ -59,7 +65,7 @@ public class UserController {
             @RequestParam String username,
             Model model
     ) {
-        if(!jpaUserDetailsService.saveUserUsername(user, username)){
+        if (!jpaUserDetailsService.saveUserUsername(user, username)) {
             model.addAttribute("user", user);
             model.addAttribute("roles", Role.values());
             model.addAttribute("usernameError", "Користувач з таким логіном вже існує або Ви не змінили логін");
@@ -75,7 +81,7 @@ public class UserController {
             @RequestParam Map<String, String> form,
             Model model
     ) {
-        if(!jpaUserDetailsService.saveUserRoles(user, form)) {
+        if (!jpaUserDetailsService.saveUserRoles(user, form)) {
             model.addAttribute("user", user);
             model.addAttribute("roles", Role.values());
             model.addAttribute("rolesError", "У користувача має бути мінімум одна роль");
@@ -112,7 +118,7 @@ public class UserController {
         model.addAttribute("is_teacher", is_teacher);
         model.addAttribute("is_guest", is_guest);
 
-        if(is_teacher || !is_guest) {
+        if (is_teacher || !is_guest) {
             model.addAttribute("chart_data", markService.getChartData(full_user));
 
             Page<Mark> page = markService.findByUser(full_user, pageable);
@@ -123,12 +129,12 @@ public class UserController {
         return "profile";
     }
 
-    @PostMapping("profile")
+    @PostMapping("/profile/editPassword")
     public String updateProfile(
             @AuthenticationPrincipal User user,
-            @RequestParam String password
+            @RequestParam String password_new
     ) {
-        jpaUserDetailsService.updateProfile(user, password);
+        jpaUserDetailsService.updateProfile(user, password_new);
         return "redirect:/users/profile";
     }
 }

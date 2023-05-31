@@ -4,8 +4,8 @@ window.addEventListener("load", function () {
     if(document.getElementById("task_option_1")) setTaskOptions();
 });
 
-select_type.addEventListener("change", updateType);
-select_element_count.addEventListener("change", updateElementCount);
+document.getElementById("select_type").addEventListener("change", updateType);
+document.getElementById("select_element_count").addEventListener("change", updateElementCount);
 
 function updateType() {
 

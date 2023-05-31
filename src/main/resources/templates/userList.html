@@ -12,33 +12,59 @@
         <div class="main__container _container">
             <h1> Список існуючих користувачів </h1>
             <div class="main__container-body">
-<!--                <form th:method="post" th:action="@{user/filter}">-->
-<!--                    <input type="text" name="username" placeholder="Логін користувача">-->
-<!--                    <button type="submit">Знайти користувача</button>-->
-<!--                </form>-->
-                <ul th:if="${page.getTotalPages() > 0}">
-                    <li th:each="page_number : ${page_numbers}" th:class="${page_number == page.number} ? active">
-                        <a th:href="@{'/users?page=' + ${page_number}}" th:text="${page_number + 1}"/>
-                    </li>
-                </ul>
-                <table>
-                    <tr>
-                        <th>Логін</th>
-                        <th>Ролі</th>
-                        <th>ФІО</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    <tr th:each="user : ${page.content}">
-                        <td th:text="${user.username}"/>
-                        <td><div th:each="role : ${user.roles}" th:text="${role}"/></td>
-                        <td th:text="|${user.lastName} ${user.firstName[0]}. ${user.patronymic[0]}.|"/>
-                        <td><a th:href="@{|/users/edit/${user.id}|}">Редагувати</a></td>
-                        <td><form th:action="@{|/users/remove/${user.id}|}" th:method="post">
-                                <button type="submit">Видалити</button>
-                        </form></td>
-                    </tr>
-                </table>
+                <section class="tb_section">
+                    <form th:method="get" th:action="@{/users}" class="tb_padding">
+                        <input class="tb_input" type="text" name="username" placeholder="Фрагмент логіну" th:value="${username}">
+                        <button class="tb_button _green" type="submit"> Знайти</button>
+                    </form>
+
+                    <div class="tb_table-responsive">
+                        <table class="tb_table">
+                            <thead>
+                            <tr>
+                                <th>Логін</th>
+                                <th>Ролі</th>
+                                <th>ПІБ</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="user : ${page.content}">
+                                <td th:text="${user.username}"/>
+
+                                <td><span th:each="role, iterStat : ${user.roles}"
+                                          th:text="${iterStat.last} ? ${role} : ${role} + ', '"/></td>
+
+                                <td th:text="|${user.lastName} ${user.firstName[0]}. ${user.patronymic[0]}.|"/>
+
+                                <td class="tb_td_active">
+                                    <a class="_yellow tb_button" th:href="@{|/users/edit/${user.id}|}">
+                                        Редагувати
+                                    </a>
+                                </td>
+
+                                <td class="tb_td_active">
+                                    <form th:action="@{|/users/remove/${user.id}|}" th:method="post">
+                                        <button class="_red tb_button" type="submit">Видалити</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="tb_pages-container">
+                        <ul th:if="${page.getTotalPages() > 0}" class="tb_pages">
+                            <li th:each="page_number : ${page_numbers}">
+                                <a th:class="${page_number == page.number} ? active"
+                                   th:href="@{'/users?page=' + ${page_number} + '&username=' + ${username}}"
+                                   th:text="${page_number + 1}"/>
+                            </li>
+                        </ul>
+                    </div>
+
+                </section>
             </div>
         </div>
     </main>

@@ -5,6 +5,7 @@ import com.example.trainbrain.models.Task;
 import com.example.trainbrain.models.User;
 import com.example.trainbrain.service.JpaUserDetailsService;
 import com.example.trainbrain.service.MarkService;
+import com.example.trainbrain.service.StudClassService;
 import com.example.trainbrain.service.TaskService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -21,19 +22,22 @@ public class GameController {
     private final TaskService taskService;
     private final JpaUserDetailsService jpaUserDetailsService;
     private final MarkService markService;
+    private final StudClassService studClassService;
 
-    public GameController(TaskService taskService, JpaUserDetailsService jpaUserDetailsService, MarkService markService) {
+    public GameController(TaskService taskService, JpaUserDetailsService jpaUserDetailsService, MarkService markService, StudClassService studClassService) {
         this.taskService = taskService;
         this.jpaUserDetailsService = jpaUserDetailsService;
         this.markService = markService;
+        this.studClassService = studClassService;
     }
 
     @GetMapping
     public String games(Model model, @AuthenticationPrincipal User user) {
         User full_user = jpaUserDetailsService.getUserById(user.getId());
-        model.addAttribute("isTeacher", full_user.getRoles().contains(Role.TEACHER));
-        model.addAttribute("tasks", full_user.getTasks());
-        model.addAttribute("myTasks", full_user.getMyTasks());
+        model.addAttribute("isTeacher", user.getRoles().contains(Role.TEACHER));
+
+        model.addAttribute("tasks", taskService.getTasksFromStudent(full_user));
+        model.addAttribute("myTasks", taskService.getTasksFromTeacher(full_user));
         return "games";
     }
 
@@ -77,7 +81,7 @@ public class GameController {
     ) {
         User full_user = jpaUserDetailsService.getUserById(user.getId());
         model.addAttribute("newTask", taskService.addTask(name, difficulty, form, full_user));
-        model.addAttribute("classes", full_user.getMyStudclasses());
+        model.addAttribute("classes", studClassService.getStudClassesFromTeacher(full_user));
         return "sendTask";
     }
 
@@ -89,7 +93,7 @@ public class GameController {
     ) {
         User full_user = jpaUserDetailsService.getUserById(user.getId());
         model.addAttribute("newTask", task);
-        model.addAttribute("classes", full_user.getMyStudclasses());
+        model.addAttribute("classes", studClassService.getStudClassesFromTeacher(full_user));
         return "sendTask";
     }
 
@@ -111,7 +115,14 @@ public class GameController {
     }
 
     @GetMapping("/play/{task}")
-    public String userPlayTask(@PathVariable Task task, Model model) {
+    public String userPlayTask(
+            @AuthenticationPrincipal User user,
+            @PathVariable Task task,
+            Model model
+    ) {
+        User full_user = jpaUserDetailsService.getUserById(user.getId());
+        if(!full_user.getTasks().contains(task)) return "redirect:/games";
+
         model.addAttribute("task_id", task.getId());
         model.addAttribute("task_option", taskService.getOptions(task));
         return taskService.convertGameNameToTemplate(task.getGameName());
