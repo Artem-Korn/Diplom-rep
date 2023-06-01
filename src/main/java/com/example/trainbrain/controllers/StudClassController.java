@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/classes")
@@ -30,10 +31,12 @@ public class StudClassController {
         model.addAttribute("isTeacher", full_user.getRoles().contains(Role.TEACHER));
 
         model.addAttribute("myClasses", full_user.getMyStudclasses().stream()
-                .sorted((c1, c2) -> c1.getName().compareTo(c2.getName())));
+                .sorted((c1, c2) -> c1.getName().compareTo(c2.getName()))
+                .collect(Collectors.toList()));
 
         model.addAttribute("classes", full_user.getStudclasses().stream()
-                .sorted((c1, c2) -> c1.getName().compareTo(c2.getName())));
+                .sorted((c1, c2) -> c1.getName().compareTo(c2.getName()))
+                .collect(Collectors.toList()));
         return "classes";
     }
 

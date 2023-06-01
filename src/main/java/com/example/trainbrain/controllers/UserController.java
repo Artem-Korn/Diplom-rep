@@ -99,6 +99,7 @@ public class UserController {
 
     @GetMapping("/profile")
     public String getUserProfile(@AuthenticationPrincipal User user) {
+        jpaUserDetailsService.loadUserByUsername(user.getUsername());
         return "redirect:/users/profile/" + user.getId();
     }
 

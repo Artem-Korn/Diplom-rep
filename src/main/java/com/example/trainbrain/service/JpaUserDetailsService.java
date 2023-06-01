@@ -6,6 +6,7 @@ import com.example.trainbrain.models.User;
 import com.example.trainbrain.repositories.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -40,7 +41,7 @@ public class JpaUserDetailsService implements UserDetailsService {
     public User getUserById(Long Id) {
         return userRepository
                 .findById(Id)
-                .orElseThrow(()->new FindException(
+                .orElseThrow(()->new UsernameNotFoundException(
                         "Користувача з таким Id не знайдено: " + Id
                 ));
     }
