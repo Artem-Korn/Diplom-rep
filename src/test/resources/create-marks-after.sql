@@ -1,0 +1,1 @@
+delete from mark_table;

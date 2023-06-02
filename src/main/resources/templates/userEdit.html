@@ -3,12 +3,12 @@
 
 <head>
     <th:block th:replace="~{blocks/head.html :: head (page_name = 'Редагування користувача')}"></th:block>
-    <link rel="stylesheet" href="/css/common_style.css">
+    <link rel="stylesheet" href="/css/common_style.css"/>
 </head>
 
 <body>
 <div class="wrapper">
-    <header th:insert="~{blocks/header.html :: header}"></header>
+    <header th:replace="~{blocks/header.html :: header}"></header>
     <main class="main">
         <div class="main__container _container">
             <div class="main__container-body">
@@ -18,7 +18,7 @@
                     <h2> Зміна логіну </h2>
 
                     <form class="tb_form" th:action="@{/users/editUsername}" th:method="post">
-                        <input type="hidden" name="user_id" th:value="${user.id}">
+                        <input type="hidden" name="user_id" th:value="${user.id}"/>
                         <div class="tb_table_info-border">
                             <table class="tb_table_info">
                                 <tr>
@@ -41,7 +41,7 @@
                     <h2> Зміна ролей </h2>
 
                     <form class="tb_form" th:action="@{/users/editRoles}" th:method="post">
-                        <input type="hidden" name="user_id" th:value="${user.id}">
+                        <input type="hidden" name="user_id" th:value="${user.id}"/>
                         <div class="tb_table_info-border">
                             <table class="tb_table_info">
                                 <tr>
@@ -50,7 +50,7 @@
                                     <span th:each="role : ${roles}">
                                         <label>
                                             <input type="checkbox" th:name="${role}"
-                                                   th:checked="${user.roles.contains(role)}">
+                                                   th:checked="${user.roles.contains(role)}"/>
                                             [[${role}]]
                                         </label>
                                     </span>

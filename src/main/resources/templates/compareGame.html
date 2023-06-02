@@ -3,13 +3,13 @@
 
 <head>
     <th:block th:replace="~{blocks/head.html :: head (page_name = 'Де більше?')}"></th:block>
-    <link rel="stylesheet" href="/css/preloader.css">
-    <link rel="stylesheet" href="/css/game_style.css">
+    <link rel="stylesheet" href="/css/preloader.css"/>
+    <link rel="stylesheet" href="/css/game_style.css"/>
 </head>
 
 <body>
     <div class="wrapper">
-        <header th:insert="~{blocks/header.html :: header}"></header>
+        <header th:replace="~{blocks/header.html :: header}"></header>
         <main class="main">
             <div class="main__container _container">
                 <h1>Де більше?</h1>
@@ -17,14 +17,14 @@
                 <form th:action="@{/games/createTask}" th:method="post" class="main__container-block">
                     <h2>Налаштування</h2>
 
-                    <input type="hidden" value="Де більше?" name="name">
-                    <input type="hidden" value="0" name="difficulty" id="difficulty">
+                    <input type="hidden" value="Де більше?" name="name"/>
+                    <input type="hidden" value="0" name="difficulty" id="difficulty"/>
                     <div class="element">
                         <label for="select_operation" class="element-label">
                             Операції:
                         </label>
                         <select name="select_operation" id="select_operation" class="option-select"
-                                th:classappend="${task_option} ? '' : '_active'" disabled>
+                                th:classappend="${task_option} ? '' : '_active'" disabled="disabled">
 
                             <option th:if="${task_option}" th:value="${task_option[0]}" th:text="${task_option[0]}"/>
                             <th:block th:unless="${task_option}">
@@ -42,7 +42,7 @@
                             Максимальне число:
                         </label>
                         <select name="select_max" id="select_max" class="option-select"
-                                th:classappend="${task_option} ? '' : '_active'" disabled>
+                                th:classappend="${task_option} ? '' : '_active'" disabled="disabled">
 
                             <option th:if="${task_option}" th:value="${task_option[1]}" th:text="${task_option[1]}"/>
                             <th:block th:unless="${task_option}">
@@ -60,7 +60,7 @@
                             Час на виконання:
                         </label>
                         <select name="select_time" id="select_time" class="option-select"
-                                th:classappend="${task_option} ? '' : '_active'" disabled>
+                                th:classappend="${task_option} ? '' : '_active'" disabled="disabled">
 
                             <option th:if="${task_option}" th:value="${task_option[2]}" th:text="${task_option[2]}"/>
                             <th:block th:unless="${task_option}">
@@ -92,7 +92,7 @@
                     </div>
                     <form th:action="@{|/games/mark/${task_id}|}" th:method="post" class="main__container-screen-buttons" id="check_form">
                         <input type="hidden" name="mark" id="mark" value="0"/>
-                        <input type="hidden" name="game" value="Де більше?">
+                        <input type="hidden" name="game" value="Де більше?"/>
                         <div class="button_container" id="btn_start_container">
                             <input type="button"
                                    class="button_container-button _start_button"
@@ -103,7 +103,7 @@
                             <input th:type="${task_option} ? 'submit' : 'button'"
                                    class="button_container-button _check_button"
                                    id="btn_check"
-                                   value="Перевірка" disabled />
+                                   value="Перевірка" disabled="disabled" />
                         </div>
                     </form>
                 </div>

@@ -3,12 +3,12 @@
 
 <head>
     <th:block th:replace="~{blocks/head.html :: head (page_name = 'Класи')}"></th:block>
-    <link rel="stylesheet" href="/css/classes_style.css">
+    <link rel="stylesheet" href="/css/classes_style.css"/>
 </head>
 
 <body>
 <div class="wrapper">
-    <header th:insert="~{blocks/header.html :: header}"></header>
+    <header th:replace="~{blocks/header.html :: header}"></header>
     <main class="main">
         <div class="main__container _container">
             <h1> Мої класи </h1>
@@ -28,7 +28,7 @@
                             <td th:text="|*{teacher.lastName} *{teacher.firstName} *{teacher.patronymic}|"/>
                             <td class="tb_td_active">
                                 <form th:action="@{|/classes/leaveClass/*{id}|}" th:method="post">
-                                    <input class="tb_button _red" type="submit" value="Вийти з класу">
+                                    <input class="tb_button _red" type="submit" value="Вийти з класу"/>
                                 </form>
                             </td>
                         </tr>
@@ -40,7 +40,7 @@
                 <h2> Класи, в яких ви є вчителем </h2>
 
                 <form class="tb_padding" th:action="@{/classes/createClass}">
-                    <input class="tb_button _orange" type="submit" value="Створити клас">
+                    <input class="tb_button _orange" type="submit" value="Створити клас"/>
                 </form>
 
                 <div th:each="myClass : ${myClasses}" th:object="${myClass}" class="tb_table-responsive tb_margin">
@@ -55,7 +55,7 @@
                             </th>
                             <th class="tb_td_active">
                                 <form th:action="@{|/classes/removeClass/*{id}|}" th:method="post">
-                                    <input class="tb_button _red" type="submit" value="Видалити клас">
+                                    <input class="tb_button _red" type="submit" value="Видалити клас"/>
                                 </form>
                             </th>
                         </tr>
@@ -75,7 +75,7 @@
                             </td>
                             <td class="tb_td_active">
                                 <form th:action="@{|/classes/removeUser/${myClass.id}/${student.id}|}" th:method="post">
-                                    <input class="tb_button _orange" type="submit" value="Видалити">
+                                    <input class="tb_button _orange" type="submit" value="Видалити"/>
                                 </form>
                             </td>
                         </tr>

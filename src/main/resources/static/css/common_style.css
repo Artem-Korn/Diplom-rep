@@ -459,6 +459,14 @@ h2 {
     background-color: #1dff1d;
 }
 
+.tb_img {
+    min-width: 100px;
+    min-height: 100px;
+
+    max-width: 100px;
+    max-height: 100px;
+}
+
 /* ---------------------------------------Footer--------------------------------------------------- */
 .footer {
     background: linear-gradient(0deg, rgba(0, 163, 255, 1) 0%, rgba(0, 212, 255, 1) 100%);

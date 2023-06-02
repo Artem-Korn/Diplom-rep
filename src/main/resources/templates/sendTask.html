@@ -3,12 +3,12 @@
 
 <head>
     <th:block th:replace="~{blocks/head.html :: head (page_name = 'Редагування завдання')}"></th:block>
-    <link rel="stylesheet" href="/css/games_style.css">
+    <link rel="stylesheet" href="/css/games_style.css"/>
 </head>
 
 <body>
 <div class="wrapper">
-    <header th:insert="~{blocks/header.html :: header}"></header>
+    <header th:replace="~{blocks/header.html :: header}"></header>
     <main class="main">
         <div class="main__container _container">
             <h1> Форма редагування завдання </h1>
@@ -27,7 +27,7 @@
                     </tr>
                 </table>
                 <form th:action="@{|/games/removeTask/${newTask.id}|}" th:method="post">
-                    <input class="tb_button _red tb_margin" type="submit" value="Видалити завдання">
+                    <input class="tb_button _red tb_margin" type="submit" value="Видалити завдання"/>
                 </form>
             </section>
 
@@ -38,7 +38,7 @@
                         <tr>
                             <th colspan="4">
                                 <label>
-                                    <input type="checkbox" name="classes" class="group_check" th:value="${class.id}">
+                                    <input type="checkbox" name="classes" class="group_check" th:value="${class.id}"/>
                                     Учні класу «[[${class.name}]]»
                                 </label>
                             </th>
@@ -53,7 +53,7 @@
                             <td>
                                 <label>
                                     <input type="checkbox" name="students" class="single_checkbox" th:value="${student.id}"
-                                           th:checked="${newTask.students.contains(student)}">
+                                           th:checked="${newTask.students.contains(student)}"/>
                                     [[${student.username}]]
                                 </label>
                             </td>
@@ -62,7 +62,7 @@
                             <td th:text="${student.patronymic}"/>
                         </tr>
                     </table>
-                    <input class="tb_button _yellow tb_margin" type="submit" value="Оновити доступ до завдання">
+                    <input class="tb_button _yellow tb_margin" type="submit" value="Оновити доступ до завдання"/>
                 </form>
             </section>
 

@@ -7,14 +7,14 @@
 
 <body>
 <div class="wrapper">
-    <header th:insert="~{blocks/header.html :: header}"></header>
+    <header th:replace="~{blocks/header.html :: header}"></header>
     <main class="main">
         <div class="main__container _container">
             <h1> Список існуючих користувачів </h1>
             <div class="main__container-body">
                 <section class="tb_section">
                     <form th:method="get" th:action="@{/users}" class="tb_padding">
-                        <input class="tb_input" type="text" name="username" placeholder="Фрагмент логіну" th:value="${username}">
+                        <input class="tb_input" type="text" name="username" placeholder="Фрагмент логіну" th:value="${username}"/>
                         <button class="tb_button _green" type="submit"> Знайти</button>
                     </form>
 

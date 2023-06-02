@@ -95,7 +95,7 @@
 </head>
 <body>
 <div class="wrapper">
-    <header th:insert="~{blocks/header.html :: header}"></header>
+    <header th:replace="~{blocks/header.html :: header}"></header>
     <main class="main">
         <div class="main__container _container">
             <h1> Профіль користувача </h1>
@@ -105,7 +105,7 @@
                     <h2> Загальна інформація </h2>
 
                     <table class="tb_table_info">
-                        <tr th:if="${is_teacher}">
+                        <tr th:if="${is_teacher} or ${!is_guest}">
                             <th>Логін :</th>
                             <td th:text="${user.username}"></td>
                         </tr>
@@ -159,7 +159,7 @@
                                 <th>Складність</th>
                             </tr>
                             <tr th:each="mark : ${page.content}">
-                                <td th:text="${#temporals.format(mark.date, 'dd.MM.yyyy (hh:mm)')}"/>
+                                <td th:text="${#temporals.format(mark.date, 'dd.MM.yyyy (HH:mm)')}"/>
                                 <td th:text="${mark.gameName}"/>
                                 <td th:text="${mark.mark} < 0 ? 'Зроблено' : ${mark.mark}"/>
                                 <td th:text="${mark.difficulty}"/>

@@ -3,12 +3,12 @@
 
 <head>
     <th:block th:replace="~{blocks/head.html :: head (page_name = 'Ігри')}"></th:block>
-    <link rel="stylesheet" href="/css/games_style.css">
+    <link rel="stylesheet" href="/css/games_style.css"/>
 </head>
 
 <body>
     <div class="wrapper">
-        <header th:insert="~{blocks/header.html :: header}"></header>
+        <header th:replace="~{blocks/header.html :: header}"></header>
         <main class="main">
             <div class="main__container _container">
                 <h1> Ігри </h1>
@@ -68,7 +68,7 @@
                         <a class="elements__game" href="/games/shulte">
                             <div class="elements__game-container">
                                 <div class="elements__game-icon">
-                                    <img src="/img/games/table.png" alt="" class="elements__game-icon-img">
+                                    <img src="/img/games/table.png" alt="" class="elements__game-icon-img"/>
                                 </div>
                                 <div class="elements__game-name">Таблиця Шульте</div>
                             </div>
@@ -76,7 +76,7 @@
                         <a class="elements__game" href="/games/mole">
                             <div class="elements__game-container">
                                 <div class="elements__game-icon">
-                                    <img src="/img/games/mole.jpg" alt="" class="elements__game-icon-img">
+                                    <img src="/img/games/mole.jpg" alt="" class="elements__game-icon-img"/>
                                 </div>
                                 <div class="elements__game-name">Знайди крота</div>
                             </div>
@@ -84,7 +84,7 @@
                         <a class="elements__game" href="/games/compare">
                             <div class="elements__game-container">
                                 <div class="elements__game-icon">
-                                    <img src="/img/games/compare.jpg" alt="" class="elements__game-icon-img">
+                                    <img src="/img/games/compare.jpg" alt="" class="elements__game-icon-img"/>
                                 </div>
                                 <div class="elements__game-name">Де більше?</div>
                             </div>
