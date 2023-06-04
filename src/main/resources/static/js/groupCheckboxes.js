@@ -17,17 +17,8 @@ Array.from(document.querySelectorAll('.single_checkbox'))
         checkSingle.call(e);
     });
 
-// Array.from(document.querySelectorAll('.tr_checkbox'))
-//     .forEach(e => {
-//         e.addEventListener('click', tr => {
-//             let checkboxes = tr.getElementsByClassName('checkbox')
-//         });
-//     });
-
 function checkGroup(){
-    let table = this.parentNode.parentNode.parentNode.parentNode;
-
-    Array.from(table.querySelectorAll('.single_checkbox'))
+    Array.from(this.parentNode.parentNode.parentNode.parentNode.querySelectorAll('.single_checkbox'))
         .forEach(e => {
             if(e.checked !== this.checked) {
                 e.checked = this.checked
@@ -39,10 +30,13 @@ function checkGroup(){
 function checkSingle(){
     let table = this.parentNode.parentNode.parentNode.parentNode.parentNode;
 
+    if (this.checked) this.parentNode.parentNode.parentNode.classList.add("_checked");
+    else this.parentNode.parentNode.parentNode.classList.remove("_checked");
+
     Array.from(table.parentNode.querySelectorAll('.single_checkbox'))
         .forEach(e => {
             if(e.value === this.value && e.checked !== this.checked) {
-                e.checked = this.checked;
+                setCheckbox(e, this.checked);
                 checkSingle.call(e);
             }
         });
@@ -60,9 +54,23 @@ function checkSingle(){
 
     if(is_changed) {
         group_checkbox.indeterminate = true;
+        group_checkbox.parentNode.parentNode.parentNode.classList.remove("_checked");
+        group_checkbox.parentNode.parentNode.parentNode.classList.add("_indeterminate");
     }
     else {
         group_checkbox.indeterminate = false;
-        group_checkbox.checked = is_checked;
+        group_checkbox.parentNode.parentNode.parentNode.classList.remove("_indeterminate");
+        setCheckbox(group_checkbox, is_checked);
+    }
+}
+
+function setCheckbox(elem, checked) {
+    if(checked) {
+        elem.checked = true;
+        elem.parentNode.parentNode.parentNode.classList.add("_checked");
+    }
+    else {
+        elem.checked = false;
+        elem.parentNode.parentNode.parentNode.classList.remove("_checked");
     }
 }
