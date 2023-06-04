@@ -34,10 +34,10 @@
             <section class="tb_section">
                 <h2 class="tb_margin"> Кому доступне </h2>
                 <form class="_flex" th:action="@{|/games/sendTask/${newTask.id}|}" th:method="post">
-                    <table class="tb_table tb_margin" th:each="class : ${classes}">
-                        <tr>
+                    <table class="tb_table tb_margin2" th:each="class : ${classes}">
+                        <tr class="_cursor_pointer">
                             <th colspan="4">
-                                <label>
+                                <label class="_cursor_pointer">
                                     <input type="checkbox" name="classes" class="group_check" th:value="${class.id}"/>
                                     Учні класу «[[${class.name}]]»
                                 </label>
@@ -49,9 +49,9 @@
                             <th class="_additional_th">Ім'я</th>
                             <th class="_additional_th">По батькові</th>
                         </tr>
-                        <tr th:each="student : ${class.students}">
+                        <tr class="_cursor_pointer" th:each="student : ${class.students}">
                             <td>
-                                <label>
+                                <label class="_cursor_pointer">
                                     <input type="checkbox" name="students" class="single_checkbox" th:value="${student.id}"
                                            th:checked="${newTask.students.contains(student)}"/>
                                     [[${student.username}]]

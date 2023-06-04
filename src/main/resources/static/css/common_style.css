@@ -281,7 +281,11 @@ h2 {
     background-color: #c9ffed;
 }
 
-.tb_table ._checked, .tb_table ._checked th {
+.tb_table ._checked th {
+    background-color: #5ac55a;
+}
+
+.tb_table ._checked {
     background-color: #7dff7d;
 }
 
@@ -298,7 +302,7 @@ h2 {
 }
 
 .tb_table ._checked:hover {
-    background-color: #74e374
+    background-color: #74e374;
 }
 
 .tb_table td:not(:last-child) {
@@ -413,6 +417,10 @@ h2 {
     margin-bottom: 10px;
 }
 
+.tb_margin2 {
+    margin-bottom: 20px;
+}
+
 .tb_padding {
     padding: 10px;
 }
@@ -453,6 +461,30 @@ h2 {
 .group_check, .single_checkbox {
     -webkit-appearance: none;
     appearance: none;
+    position: relative;
+}
+
+.group_check:after, .single_checkbox:after {
+    position: absolute;
+    right: 10px;
+    bottom: -6px;
+    font-size: 20px;
+}
+
+.single_checkbox:after {
+    content: "\2610";
+}
+
+.group_check:checked:after, .single_checkbox:checked:after {
+    content: "\2611";
+}
+
+.group_check:indeterminate:after {
+    content: "\2610";
+}
+
+._cursor_pointer:hover {
+    cursor: pointer;
 }
 
 /* ---------------------------------------Footer--------------------------------------------------- */
