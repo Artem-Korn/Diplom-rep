@@ -56,10 +56,20 @@ export class CompareGame {
         ];
 
         this.operation = [
-            (a, b) => { return { res: a + b, text: a + " + " + b } },
-            (a, b) => { return { res: a - b, text: a + " - " + b } },
-            (a, b) => { return { res: a * b, text: a + " * " + b } },
-            (a, b) => { return { res: a / b, text: a + " / " + b } }
+            (a, b) => {
+                return {res: a + b, text: a + " + " + b}
+            },
+            (a, b) => {
+                if (a < b) b = [a, a = b][0];
+                return {res: a - b, text: a + " - " + b}
+            },
+            (a, b) => {
+                return {res: a * b, text: a + " * " + b}
+            },
+            (a, b) => {
+                if (a % b) a = b * this.randomVal(Math.floor((this.game.max - 1) / b) + 1, 1);
+                return {res: a / b, text: a + " / " + b}
+            }
         ];
 
         const tick = new Audio();
@@ -91,8 +101,7 @@ export class CompareGame {
         if (this.canvas.width > this.canvas.height) {
             this.timer.x = this.canvas.width / 10 * 3;
             this.timer.y = 0;
-        }
-        else {
+        } else {
             this.timer.x = 0;
             this.timer.y = this.timer.height * 2;
         }
@@ -117,8 +126,7 @@ export class CompareGame {
             this.examples[1].width /= 2;
             this.examples[1].x = this.examples[0].width;
             this.examples[2].x = this.canvas.width - this.examples[2].width;
-        }
-        else {
+        } else {
             this.examples.forEach((e) => {
                 e.height = this.canvas.height / 5 * 2;
                 e.width = this.canvas.width;
@@ -138,10 +146,12 @@ export class CompareGame {
             this.examples[1].text_x += this.examples[1].width / 5;
         }
 
+        let padding = this.game.operation_index === 0 ? 100 : 10;
+
         this.font_size = Math.min(
-            (this.getOptimalTextSize(this.examples[0].text, this.examples[0].height, this.examples[0].width) - 8),
-            (this.getOptimalTextSize(this.examples[1].text, this.examples[1].height, this.examples[1].width) - 8),
-            (this.getOptimalTextSize(this.examples[2].text, this.examples[2].height, this.examples[2].width) - 8)
+            (this.getOptimalTextSize(this.examples[0].text, this.examples[0].height, this.examples[0].width) - padding),
+            (this.getOptimalTextSize(this.examples[1].text, this.examples[1].height, this.examples[1].width) - padding),
+            (this.getOptimalTextSize(this.examples[2].text, this.examples[2].height, this.examples[2].width) - padding)
         );
     }
 
@@ -224,9 +234,11 @@ export class CompareGame {
         }
     }
 
-    randomVal(max, min = 0) { return Math.floor(Math.random() * (max - min) + min); }
+    randomVal(max, min = 0) {
+        return Math.floor(Math.random() * (max - min) + min);
+    }
 
-    generateExemple(index) {
+    generateExample(index) {
         return this.operation[index](
             this.randomVal(this.game.max, 1),
             this.randomVal(this.game.max, 1)
@@ -238,17 +250,21 @@ export class CompareGame {
 
         if (this.game.operation_index === 0) {
             a = this.randomVal(this.game.max, 1);
-            ex1 = { res: a, text: a }
-            b = this.randomVal(this.game.max, 1);
-            ex2 = { res: b, text: b }
-        }
-        else if (this.game.operation_index === 1) {
-            ex1 = this.generateExemple(this.randomVal(this.operation.length));
-            ex2 = this.generateExemple(this.randomVal(this.operation.length));
-        }
-        else {
-            ex1 = this.generateExemple(this.game.operation_index - 2);
-            ex2 = this.generateExemple(this.game.operation_index - 2);
+            ex1 = {res: a, text: a}
+
+            if (this.randomVal(100, 0) > 30) {
+                b = this.randomVal(this.game.max, 1);
+            } else {
+                b = a;
+            }
+            ex2 = {res: b, text: b}
+
+        } else if (this.game.operation_index === 1) {
+            ex1 = this.generateExample(this.randomVal(this.operation.length));
+            ex2 = this.generateExample(this.randomVal(this.operation.length));
+        } else {
+            ex1 = this.generateExample(this.game.operation_index - 2);
+            ex2 = this.generateExample(this.game.operation_index - 2);
         }
 
         this.game.right_answer = ex1.res > ex2.res ? 0 : ex1.res < ex2.res ? 2 : 1;
@@ -272,8 +288,7 @@ export class CompareGame {
 
                 if (counter >= 0) {
                     this.tick.play();
-                }
-                else if (counter < 0) {
+                } else if (counter < 0) {
                     clearInterval(this.timer.timer_id);
                     this.bell.play();
                     timer_panel.classList.remove("_timer");
@@ -373,14 +388,13 @@ export class CompareGame {
         if (input === this.game.right_answer) {
             this.game.right++;
             this.indicator.color_index = 2;
-        }
-        else {
+        } else {
             this.game.wrong++;
             this.indicator.color_index = 1;
         }
         setTimeout(() => {
             this.indicator.color_index = 0;
-        }, 200);
+        }, 300);
         this.generateTask();
     }
 
@@ -389,10 +403,7 @@ export class CompareGame {
             let examples_count = this.game.right + this.game.wrong;
             let correct = this.game.right * 100 / examples_count;
             let speed = ((examples_count / (this.timer.time / 1000)) * 100) / (1 / (this.getDifficulty() / 30));
-            console.log(examples_count / (this.timer.time / 1000));
-            console.log(speed);
-            console.log(correct);
-            if(speed > 100) speed = 0;
+            if (speed > 100) speed = 0;
             else speed -= 100;
             return Math.round(correct + speed);
         }

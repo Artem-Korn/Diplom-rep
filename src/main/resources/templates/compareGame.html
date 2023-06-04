@@ -26,7 +26,7 @@
                         <select name="select_operation" id="select_operation" class="option-select"
                                 th:classappend="${task_option} ? '' : '_active'" disabled="disabled">
 
-                            <option th:if="${task_option}" th:value="${task_option[0]}" th:text="${task_option[0]}"/>
+                            <option th:if="${task_option}" th:value="${task_option[0]}" th:text="${task_option[0]}" id="task_option_1"/>
                             <th:block th:unless="${task_option}">
                                 <option value="0">Немає</option>
                                 <option th:if="${isTeacher}" value="1">Випадкові</option>
@@ -44,7 +44,7 @@
                         <select name="select_max" id="select_max" class="option-select"
                                 th:classappend="${task_option} ? '' : '_active'" disabled="disabled">
 
-                            <option th:if="${task_option}" th:value="${task_option[1]}" th:text="${task_option[1]}"/>
+                            <option th:if="${task_option}" th:value="${task_option[1]}" th:text="${task_option[1]}" id="task_option_2"/>
                             <th:block th:unless="${task_option}">
                                 <option value="5">5</option>
                                 <option value="10">10</option>
@@ -62,7 +62,7 @@
                         <select name="select_time" id="select_time" class="option-select"
                                 th:classappend="${task_option} ? '' : '_active'" disabled="disabled">
 
-                            <option th:if="${task_option}" th:value="${task_option[2]}" th:text="${task_option[2]}"/>
+                            <option th:if="${task_option}" th:value="${task_option[2]}" th:text="${task_option[2]}" id="task_option_3"/>
                             <th:block th:unless="${task_option}">
                                 <option th:if="${isTeacher}" value="30">30с.</option>
                                 <option value="60">1хв.</option>

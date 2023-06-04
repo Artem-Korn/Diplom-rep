@@ -14,6 +14,11 @@ window.addEventListener("load", () => {
 });
 
 window.addEventListener("resize", screenUpdate);
+document.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+    }
+})
 
 document.getElementById("btn_start").addEventListener("click", function () {
     const btn_check = document.getElementById("btn_check");

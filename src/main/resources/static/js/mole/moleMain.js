@@ -1,4 +1,4 @@
-import { MoleGame } from "./moleGame.js";
+import {MoleGame} from "./moleGame.js";
 
 const canvas = document.getElementById('game_canvas');
 const context = canvas.getContext('2d');
@@ -42,7 +42,6 @@ function updateSize() {
 function updateGrid() {
     moleGame.setGrid(select_rows.value, select_columns.value);
     num_start_pos.max = select_rows.value * select_columns.value;
-    if(num_start_pos.value > num_start_pos.max) num_start_pos.value = num_start_pos.max;
     updateStartPos();
 }
 
@@ -67,15 +66,22 @@ function updateIsDemo() {
 }
 
 function updateStartPos() {
-    if (select_start_pos.value === '1') moleGame.setMoleIndex(num_start_pos.value);
-    else moleGame.setRandomMoleIndex();
+    if (select_start_pos.value === '1') {
+        if (num_start_pos.value === '') {
+            num_start_pos.value = 1;
+        } else if (Number(num_start_pos.value) > Number(num_start_pos.max)) {
+            num_start_pos.value = num_start_pos.max;
+        }
+        moleGame.setMoleIndex(num_start_pos.value);
+    } else {
+        moleGame.setRandomMoleIndex();
+    }
     updateDifficulty();
 }
 
 function updateDifficulty() {
     difficulty.value = moleGame.getDifficulty();
 }
-
 
 function updateGameStat() {
     moleGame.updateGameStat(btn_check);

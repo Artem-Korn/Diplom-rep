@@ -59,8 +59,6 @@ body {
     padding-right: 20px;
 }
 
-/* ----------------------------------------Header---------------------------------------------------- */
-
 ._red {
     background-color: #ff2121;
     border-color: #ff2121;
@@ -90,6 +88,8 @@ body {
     background-color: #FFFFFF;
     border-color: #FFFFFF;
 }
+
+/* ----------------------------------------Header---------------------------------------------------- */
 
 .header {
     background: linear-gradient(0deg, #00A3FF 0%, #00D4FF 100%);
@@ -473,8 +473,6 @@ h2 {
     border-style: outset;
     border-width: 2px;
     border-color: rgb(0, 212, 255);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 50px;
+    text-align: center;
+    padding: 15px 10px;
 }

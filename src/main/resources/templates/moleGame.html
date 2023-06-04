@@ -26,13 +26,13 @@
                             <select name="select_rows" id="select_rows" class="option-select"
                                     th:classappend="${task_option} ? '' : '_active'" disabled="disabled">
 
-                                <option th:if="${task_option}" th:value="${task_option[0]}" th:text="${task_option[0]}"/>
+                                <option th:if="${task_option}" th:value="${task_option[0]}" th:text="${task_option[0]}" id="task_option_1"/>
                                 <th:block th:unless="${task_option}">
                                     <option value="3">3</option>
                                     <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
+                                    <option th:if="${isTeacher}" value="5">5</option>
+                                    <option th:if="${isTeacher}" value="6">6</option>
+                                    <option th:if="${isTeacher}" value="7">7</option>
                                 </th:block>
                             </select>
                         </div>
@@ -43,7 +43,7 @@
                             <select name="select_columns" id="select_columns" class="option-select"
                                     th:classappend="${task_option} ? '' : '_active'" disabled="disabled">
 
-                                <option th:if="${task_option}" th:value="${task_option[1]}" th:text="${task_option[1]}"/>
+                                <option th:if="${task_option}" th:value="${task_option[1]}" th:text="${task_option[1]}" id="task_option_2"/>
                                 <th:block th:unless="${task_option}">
                                     <option value="3">3</option>
                                     <option value="4">4</option>
@@ -60,7 +60,7 @@
                             <select name="select_start_pos" id="select_start_pos" class="option-select"
                                     th:classappend="${task_option} ? '' : '_active'" disabled="disabled">
 
-                                <option th:if="${task_option}" th:value="${task_option[2]}" th:text="${task_option[2]}"/>
+                                <option th:if="${task_option}" th:value="${task_option[2]}" th:text="${task_option[2]}" id="task_option_3"/>
                                 <th:block th:unless="${task_option}">
                                     <option value="0">Випадкова</option>
                                     <option value="1">Задати</option>
@@ -77,7 +77,7 @@
                             <select name="select_steps_count" id="select_steps_count" class="option-select"
                                     th:classappend="${task_option} ? '' : '_active'" disabled="disabled">
 
-                                <option th:if="${task_option}" th:value="${task_option[4]}" th:text="${task_option[4]}"/>
+                                <option th:if="${task_option}" th:value="${task_option[4]}" th:text="${task_option[4]}" id="task_option_4"/>
                                 <th:block th:unless="${task_option}">
                                     <option value="3">3</option>
                                     <option value="4">4</option>
@@ -94,7 +94,7 @@
                             <select name="select_speed" id="select_speed" class="option-select"
                                     th:classappend="${task_option} ? '' : '_active'" disabled="disabled">
 
-                                <option th:if="${task_option}" th:value="${task_option[5]}" th:text="${task_option[5]}"/>
+                                <option th:if="${task_option}" th:value="${task_option[5]}" th:text="${task_option[5]}" id="task_option_5"/>
                                 <th:block th:unless="${task_option}">
                                     <option value="2">2c.</option>
                                     <option value="3">3c.</option>
@@ -110,7 +110,7 @@
                             <select name="select_hide" id="select_hide" class="option-select"
                                     th:classappend="${task_option} ? '' : '_active'" disabled="disabled">
 
-                                <option th:if="${task_option}" th:value="${task_option[6]}" th:text="${task_option[6]}"/>
+                                <option th:if="${task_option}" th:value="${task_option[6]}" th:text="${task_option[6]}" id="task_option_6"/>
                                 <th:block th:unless="${task_option}">
                                     <option value="0">ні</option>
                                     <option th:if="${isTeacher}" value="1">так</option>
@@ -124,7 +124,7 @@
                             <select name="select_demo" id="select_demo" class="option-select"
                                     th:classappend="${task_option} ? '' : '_active'" disabled="disabled">
 
-                                <option th:if="${task_option}" th:value="${task_option[7]}" th:text="${task_option[7]}"/>
+                                <option th:if="${task_option}" th:value="${task_option[7]}" th:text="${task_option[7]}" id="task_option_7"/>
                                 <th:block th:unless="${task_option}">
                                     <option value="0">ні</option>
                                     <option value="1">так</option>
