@@ -454,10 +454,6 @@ h2 {
     min-height: 400px;
 }
 
-.btn {
-    background-color: #1dff1d;
-}
-
 .group_check, .single_checkbox {
     -webkit-appearance: none;
     appearance: none;
