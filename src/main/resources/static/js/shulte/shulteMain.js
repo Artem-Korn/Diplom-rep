@@ -55,6 +55,7 @@ function updateHeader() {
 
 function updateGrid() {
     table.setGrid(select_rows.value, select_columns.value);
+    table.setGridColors(select_is_colorfull.value);
     updateDifficulty();
 }
 

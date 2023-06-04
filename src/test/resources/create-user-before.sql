@@ -1,6 +1,9 @@
 delete from user_task_table;
 delete from user_studclass_table;
 delete from user_role_table;
+delete from task_table;
+delete from studclass_table;
+delete from mark_table;
 delete from user_table;
 
 insert into user_table (id, username, password, last_name, first_name, patronymic)
