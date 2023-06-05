@@ -65,7 +65,7 @@ values
     (6, 29, 'Знайди крота', '3;3;0;1;3;2;0;0', 4),
     (7, 42, 'Де більше?', '0;5;30', 2);
 
-select setval('task_table_seq', 6);
+select setval('task_table_seq', 7);
 
 insert into user_task_table (user_id, task_id)
 values
