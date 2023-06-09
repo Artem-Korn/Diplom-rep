@@ -5,6 +5,7 @@ import com.example.trainbrain.models.User;
 import com.example.trainbrain.repositories.StudClassRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +39,7 @@ public class StudClassService {
 
     public List<StudClass> getStudClassesFromTeacher(User teacher) {
         return teacher.getMyStudclasses().stream()
-                .sorted((s1, s2) -> s1.getName().compareTo(s2.getName()))
+                .sorted(Comparator.comparing(StudClass::getName))
                 .collect(Collectors.toList());
     }
 }

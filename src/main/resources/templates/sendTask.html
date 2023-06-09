@@ -78,7 +78,7 @@
                     <tr th:each="mark : ${newTask.marks}" th:object="${mark.user}">
                         <td th:text="*{username}"/>
                         <td th:text="|*{lastName} *{firstName[0]}. *{patronymic[0]}.|"></td>
-                        <td th:text="${#temporals.format(mark.date, 'dd.MM.yyyy (hh:mm)')}"/>
+                        <td th:text="${#temporals.format(mark.date, 'dd.MM.yyyy (HH:mm)')}"/>
                         <td th:text="${mark.mark < 0 ? 'Зроблено' : mark.mark}"></td>
                     </tr>
                 </table>

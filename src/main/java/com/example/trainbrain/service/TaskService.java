@@ -64,13 +64,13 @@ public class TaskService {
 
     public List<Task> getTasksFromStudent(User student) {
         return student.getTasks().stream()
-                .sorted((t1, t2) -> t1.getId().compareTo(t2.getId()))
+                .sorted(Comparator.comparing(Task::getId))
                 .collect(Collectors.toList());
     }
 
     public List<Task> getTasksFromTeacher(User teacher) {
         return teacher.getMyTasks().stream()
-                .sorted((t1, t2) -> t1.getId().compareTo(t2.getId()))
+                .sorted(Comparator.comparing(Task::getId))
                 .collect(Collectors.toList());
     }
 }
