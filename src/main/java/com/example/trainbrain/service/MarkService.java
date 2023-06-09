@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +27,7 @@ public class MarkService {
     }
 
     public void createMark(Integer mark, String game_name, User user, Task task) {
-        this.markRepository.save(new Mark(game_name, mark, task.getDifficulty(), LocalDateTime.now(), user, task));
+        this.markRepository.save(new Mark(game_name, mark, task.getDifficulty(), LocalDateTime.now(ZoneId.of("Europe/Simferopol")), user, task));
     }
 
     public Map<String, List<Object>> getChartData(User user) {
