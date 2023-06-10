@@ -117,11 +117,11 @@ public class GameController {
     @GetMapping("/play/{task}")
     public String userPlayTask(
             @AuthenticationPrincipal User user,
-            @PathVariable Task task,
+            @PathVariable(required = false) Task task,
             Model model
     ) {
         User full_user = jpaUserDetailsService.getUserById(user.getId());
-        if(!full_user.getTasks().contains(task)) return "redirect:/games";
+        if(task == null || !full_user.getTasks().contains(task)) return "redirect:/games";
 
         model.addAttribute("task_id", task.getId());
         model.addAttribute("task_option", taskService.getOptions(task));
