@@ -11,6 +11,7 @@ Languages:
 - HTML;
 - CSS;
 - SQL (PostgreSQL).
+
 Frameworks/Libraries:
 - Spring Boot
 - Spring Security
