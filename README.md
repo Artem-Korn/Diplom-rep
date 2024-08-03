@@ -21,6 +21,6 @@ Frameworks/Libraries:
 
 ## 3 Conclusion
 In the course of my bachelor's thesis, I developed a web service for the comprehensive development of students' brains. IntelliJ IDEA was chosen as the development environment.
-During the work, the principles of web programming were used using HTML, CSS and JavaScript technologies. In addition, the skills of working with the PostgeSQL database and the Spring Boot framework in Java were consolidated. The created application was deployed on the Heroku platform (link: https://spring-boot-app.herokuapp.com/).
+During the work, the principles of web programming were used using HTML, CSS and JavaScript technologies. In addition, the skills of working with the PostgeSQL database and the Spring Boot framework in Java were consolidated. The created application was deployed on the Heroku platform during my studies, but not now.
 The developed product is perfect for improving online classes and developing students' brainpower by providing a list of training games and the ability to send them as homework.
 The web service has been successfully tested. No errors were found during testing.
