@@ -1,4 +1,4 @@
-# Diplom-rep
+# Web service for comprehensive brain development in students
 ## 1 Description
 My bachelor's thesis on the topic "Web service for comprehensive brain development in students".
 The aim of the work is to expand the possibilities of brain development in students by creating a software product for conducting classes on the development of cognitive brain functions.
